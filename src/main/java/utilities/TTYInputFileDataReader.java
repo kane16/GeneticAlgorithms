@@ -7,10 +7,10 @@ import java.util.Objects;
 
 public class TTYInputFileDataReader {
 
-    public List<File> getAllFilesFromInputDataFolder(){
+    public static List<File> getAllFilesFromInputDataFolder(){
         File file = null;
         try{
-            file = new File(Objects.requireNonNull(getClass().getClassLoader()
+            file = new File(Objects.requireNonNull(TTYInputFileDataReader.class.getClassLoader()
                     .getResource("inputData"))
                     .getFile());
             file = new File(file.getAbsolutePath().replace("%20", " "));
@@ -20,10 +20,10 @@ public class TTYInputFileDataReader {
         return Arrays.asList(file.listFiles());
     }
 
-    public File getDataInputFile(String filename){
+    public static File getDataInputFile(String filename){
         File file = null;
         try{
-            file = new File(Objects.requireNonNull(getClass().getClassLoader()
+            file = new File(Objects.requireNonNull(TTYInputFileDataReader.class.getClassLoader()
                     .getResource("inputData/" + filename + ".ttp"))
                     .getFile());
             file = new File(file.getAbsolutePath().replace("%20", " "));

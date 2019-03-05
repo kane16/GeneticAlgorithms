@@ -14,6 +14,11 @@ public class ThiefData {
     private double minSpeed;
     private double maxSpeed;
     private long knapsackCapacity;
+    private double knapsackLoad;
     private double rentingRatio;
+
+    public double getCurrentSpeed(){
+        return maxSpeed - knapsackLoad*(maxSpeed-minSpeed)/knapsackCapacity;
+    }
 
 }
