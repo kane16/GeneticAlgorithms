@@ -1,4 +1,4 @@
-package models;
+package models.dataInput;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,5 +14,6 @@ public class ThiefData {
     private double minSpeed;
     private double maxSpeed;
     private long knapsackCapacity;
+    private double rentingRatio;
 
 }
