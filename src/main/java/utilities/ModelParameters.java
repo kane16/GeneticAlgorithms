@@ -11,6 +11,5 @@ public class ModelParameters {
     public static double Px = 0.33;
     public static int pop_size = 100;
     public static int gen = 10;
-    public static List<File> inputFiles = getAllFilesFromInputDataFolder();
 
 }

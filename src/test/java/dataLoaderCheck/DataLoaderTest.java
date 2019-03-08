@@ -9,8 +9,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dataProcessing.TravellingSalesmanOptimisationCalculations.getDistanceBetweenCities;
-import static dataProcessing.TravellingSalesmanOptimisationCalculations.getTotalDistanceFromChromosome;
+import static dataProcessing.OptimizationCalculations.getDistanceBetweenCities;
+import static dataProcessing.OptimizationCalculations.getTotalDistanceFromChromosome;
 import static utilities.DataInputExtractor.getDataInputContainerFromFile;
 import static org.junit.Assert.*;
 
@@ -26,7 +26,7 @@ public class DataLoaderTest {
 
     @Test
     public void filesInResourceFolderFoundTest(){
-        List<File> files = inputFileDataReader.getAllFilesFromInputDataFolder();
+        List<String> files = inputFileDataReader.getAllFilesFromInputDataFolder();
 
         assertNotNull(files);
         assertEquals(17, files.size());

@@ -4,10 +4,11 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class TTYInputFileDataReader {
 
-    public static List<File> getAllFilesFromInputDataFolder(){
+    public static List<String> getAllFilesFromInputDataFolder(){
         File file = null;
         try{
             file = new File(Objects.requireNonNull(TTYInputFileDataReader.class.getClassLoader()
@@ -17,7 +18,8 @@ public class TTYInputFileDataReader {
         }catch (NullPointerException exc){
             System.out.println("Nie znaleziono folderu");
         }
-        return Arrays.asList(file.listFiles());
+        return Arrays.stream(file.listFiles()).map(scenario -> scenario.getName().replace(".ttp", ""))
+                .collect(Collectors.toList());
     }
 
     public static File getDataInputFile(String filename){

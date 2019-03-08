@@ -5,7 +5,7 @@ import models.dataInput.ThiefData;
 
 import java.util.List;
 
-public class TravellingSalesmanOptimisationCalculations {
+public class OptimizationCalculations {
 
     public static double getDistanceBetweenCities(NodeCoord node1, NodeCoord node2){
         return Math.pow(Math.pow(node2.getX() - node1.getX(), 2) +
@@ -29,6 +29,18 @@ public class TravellingSalesmanOptimisationCalculations {
             }
         }
         return distance;
+    }
+
+    private static double getProfitFromKnapsnack(){
+        return 0;
+    }
+
+    private static double getTotalTimeToTravelDistance(){
+        return 0;
+    }
+
+    private static double getFitnessCalculationResult(){
+        return getProfitFromKnapsnack() - getTotalTimeToTravelDistance();
     }
 
 }
