@@ -99,10 +99,19 @@ public class GaApplicationTests {
     }
 
     @Test
-    public void testOptimization(){
+    public void testProfit(){
         DataInputContainer container = dataExtractionService.getDataInputContainerFromFile(
                 dataExtractionService.getDataInputFile("easy_0"));
-        System.out.println(optimizationService.getTotalProfitFromChromosome(container));
+        System.out.println(optimizationService.getTotalProfitFromChromosome(container,
+                chromosomeGenerationService.getRandomChromosome(container.getNodeCoordList().size())));
+    }
+
+    @Test
+    public void testTotalTime(){
+        DataInputContainer container = dataExtractionService.getDataInputContainerFromFile(
+                dataExtractionService.getDataInputFile("easy_0"));
+        System.out.println(optimizationService.getTotalTimeFromChromosome(container,
+                chromosomeGenerationService.getRandomChromosome(container.getNodeCoordList().size())));
     }
 
 }
