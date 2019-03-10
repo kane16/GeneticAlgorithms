@@ -12,18 +12,18 @@
    <children>
       <AnchorPane prefHeight="768.0" prefWidth="181.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXButton fx:id="showSimulationTableOutputButton" layoutX="2.0" layoutY="616.0" onAction="#showPopulationScreen" prefHeight="37.0" prefWidth="201.0" style="-fx-background-color: black;" text="Wyniki symulacji" textFill="WHITE">
+            <JFXButton fx:id="showSimulationTableOutputButton" layoutX="2.0" layoutY="616.0" onAction="#showPopulationScreen" prefHeight="37.0" prefWidth="201.0" style="-fx-background-color: black;" text="Simulation table" textFill="WHITE">
                <font>
                   <Font name="Lucida Sans Demibold" size="18.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="showSimulationVisualisationOutputButton" layoutX="-2.0" layoutY="660.0" prefHeight="37.0" prefWidth="205.0" style="-fx-background-color: black;" text="Wizualizacja" textFill="WHITE">
+            <JFXButton fx:id="showSimulationVisualisationOutputButton" layoutX="-2.0" layoutY="660.0" prefHeight="37.0" prefWidth="205.0" style="-fx-background-color: black;" text="Data visualization" textFill="WHITE">
                <font>
                   <Font name="Lucida Sans Demibold" size="18.0" />
                </font>
             </JFXButton>
             <JFXComboBox fx:id="simulationComboBox" layoutX="14.0" layoutY="28.0" prefHeight="25.0" prefWidth="182.0" promptText="Choose scenario" />
-            <JFXButton fx:id="showInitialPopulationButton" layoutX="2.0" layoutY="572.0" onAction="#showPopulationScreen" prefHeight="37.0" prefWidth="201.0" style="-fx-background-color: black;" text="Populacja startowa" textFill="WHITE">
+            <JFXButton fx:id="showInitialPopulationButton" layoutX="2.0" layoutY="572.0" onAction="#showPopulationScreen" prefHeight="37.0" prefWidth="201.0" style="-fx-background-color: black;" text="Initial population" textFill="WHITE">
                <font>
                   <Font name="Lucida Sans Demibold" size="18.0" />
                </font>

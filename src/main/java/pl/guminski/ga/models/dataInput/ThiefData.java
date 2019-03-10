@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +18,7 @@ public class ThiefData {
     private long knapsackCapacity;
     private double knapsackLoad;
     private double rentingRatio;
+    private long profit;
 
     public double getCurrentSpeed(){
         return maxSpeed - knapsackLoad*(maxSpeed-minSpeed)/knapsackCapacity;

@@ -1,20 +1,22 @@
-package pl.guminski.ga.dataProcessing;
+package pl.guminski.ga.services;
 
+import org.springframework.stereotype.Service;
 import pl.guminski.ga.models.Individual;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class OptimizationModel {
+@Service
+public class ChromosomeGenerationService {
 
-    public Integer generationNumber;
-
-    public static List<Individual> generateRandomIndividuals(int coordsSize, int numberOfIndividuals){
+    public List<Individual> generateRandomIndividuals(int coordsSize, int numberOfIndividuals){
 
         List<Individual> individuals = new ArrayList<>();
 
         for(int i=0 ; i<numberOfIndividuals ; i++){
             Individual individual = new Individual();
+            individual.setIndex(i+1);
             individual.setChromosome(getRandomChromosome(coordsSize));
             individuals.add(individual);
         }
@@ -22,7 +24,7 @@ public class OptimizationModel {
         return individuals;
     }
 
-    public static List<Integer> getRandomChromosome(int coordsSize) {
+    public List<Integer> getRandomChromosome(int coordsSize) {
         ArrayList<Integer> chromosome = new ArrayList<>();
         int i=0;
         while(i < coordsSize){

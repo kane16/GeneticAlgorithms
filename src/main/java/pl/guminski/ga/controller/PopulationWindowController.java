@@ -1,10 +1,13 @@
 package pl.guminski.ga.controller;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import com.jfoenix.controls.JFXTreeTableView;
+import javafx.fxml.FXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.guminski.ga.services.ParametersService;
+import pl.guminski.ga.services.PopulateTableService;
+import pl.guminski.ga.services.SimulationService;
+import sun.reflect.generics.tree.Tree;
 
 import java.io.IOException;
 
@@ -14,9 +17,17 @@ public class PopulationWindowController {
     @Autowired
     ParametersService parametersService;
 
+    @Autowired
+    SimulationService simulationService;
+
+    @Autowired
+    PopulateTableService populateTableService;
+
+    @FXML
+    JFXTreeTableView treeTable;
+
     public void initialize() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainToolbar.fxml"));
-        System.out.println(parametersService.getChromosome_size());
+        populateTableService.populateTable(treeTable, false);
     }
 
 }

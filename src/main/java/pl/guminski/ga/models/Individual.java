@@ -13,7 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Individual {
 
-    private Integer generation;
+    private int index;
+    private int generation;
     private List<Integer> chromosome;
     private double fitness;
 

@@ -11,14 +11,10 @@ import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import pl.guminski.ga.services.DataExtractionService;
 import pl.guminski.ga.services.ParametersService;
 import pl.guminski.ga.services.RoutingService;
-
-import static pl.guminski.ga.services.ParametersService.*;
-import static pl.guminski.ga.utilities.DataInputExtractor.getDataInputContainerFromFile;
-import static pl.guminski.ga.utilities.ModelParameters.pop_size;
-import static pl.guminski.ga.utilities.TTYInputFileDataReader.getAllFilesFromInputDataFolder;
-import static pl.guminski.ga.utilities.TTYInputFileDataReader.getDataInputFile;
+import pl.guminski.ga.services.SimulationService;
 
 @Controller
 public class MainController {
@@ -31,6 +27,12 @@ public class MainController {
 
     @Autowired
     ParametersService parametersService;
+
+    @Autowired
+    SimulationService simulationService;
+
+    @Autowired
+    DataExtractionService dataExtractionService;
 
     @FXML
     private JFXButton showSimulationTableOutputButton;
@@ -65,7 +67,7 @@ public class MainController {
 
         ObservableList<String> scenarioNames = FXCollections.observableArrayList();
 
-        scenarioNames.addAll(getAllFilesFromInputDataFolder());
+        scenarioNames.addAll(dataExtractionService.getAllFilesFromInputDataFolder());
 
         this.showSimulationTableOutputButton.setDisable(true);
 
@@ -78,7 +80,10 @@ public class MainController {
         simulationComboBox.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) ->
         {
             if(newValue != null){
-                parametersService.setDataInputContainer(getDataInputContainerFromFile(getDataInputFile(newValue)));
+                parametersService.setDataInputContainer(
+                        dataExtractionService.getDataInputContainerFromFile(
+                                dataExtractionService.getDataInputFile(newValue)));
+                simulationService.populateModel();
                 showInitialPopulationButton.setDisable(false);
             }
         });

@@ -1,5 +1,6 @@
-package pl.guminski.ga.utilities;
+package pl.guminski.ga.services;
 
+import org.springframework.stereotype.Service;
 import pl.guminski.ga.models.dataInput.DataInputContainer;
 import pl.guminski.ga.models.dataInput.Item;
 import pl.guminski.ga.models.dataInput.NodeCoord;
@@ -7,15 +8,15 @@ import pl.guminski.ga.models.dataInput.ThiefData;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-public class DataInputExtractor {
+@Service
+public class DataExtractionService {
 
-    public static DataInputContainer getDataInputContainerFromFile(File file){
+    public DataInputContainer getDataInputContainerFromFile(File file){
         DataInputContainer dataInputContainer = new DataInputContainer();
         try {
             Scanner scanner = new Scanner(file);
@@ -89,6 +90,33 @@ public class DataInputExtractor {
             e.printStackTrace();
         }
         return dataInputContainer;
+    }
+
+    public List<String> getAllFilesFromInputDataFolder(){
+        File file = null;
+        try{
+            file = new File(Objects.requireNonNull(DataExtractionService.class.getClassLoader()
+                    .getResource("inputData"))
+                    .getFile());
+            file = new File(file.getAbsolutePath().replace("%20", " "));
+        }catch (NullPointerException exc){
+            System.out.println("Nie znaleziono folderu");
+        }
+        return Arrays.stream(file.listFiles()).map(scenario -> scenario.getName().replace(".ttp", ""))
+                .collect(Collectors.toList());
+    }
+
+    public File getDataInputFile(String filename){
+        File file = null;
+        try{
+            file = new File(Objects.requireNonNull(DataExtractionService.class.getClassLoader()
+                    .getResource("inputData/" + filename + ".ttp"))
+                    .getFile());
+            file = new File(file.getAbsolutePath().replace("%20", " "));
+        }catch (NullPointerException exc){
+            System.out.println("Nie znaleziono pliku");
+        }
+        return file;
     }
 
 }
