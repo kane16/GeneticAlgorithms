@@ -1,9 +1,9 @@
-package utilities;
+package pl.guminski.ga.utilities;
 
-import models.dataInput.DataInputContainer;
-import models.dataInput.Item;
-import models.dataInput.NodeCoord;
-import models.dataInput.ThiefData;
+import pl.guminski.ga.models.dataInput.DataInputContainer;
+import pl.guminski.ga.models.dataInput.Item;
+import pl.guminski.ga.models.dataInput.NodeCoord;
+import pl.guminski.ga.models.dataInput.ThiefData;
 
 import java.io.File;
 import java.io.FileNotFoundException;

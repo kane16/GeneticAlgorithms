@@ -1,4 +1,5 @@
-package models.dataInput;
+package pl.guminski.ga.models.dataInput;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +10,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NodeCoord {
+public class Item {
 
     private long index;
-    private double x;
-    private double y;
+    private long profit;
+    private long weight;
+    private long node;
 
 }

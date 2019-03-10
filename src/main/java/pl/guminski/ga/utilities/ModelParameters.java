@@ -1,9 +1,7 @@
-package utilities;
+package pl.guminski.ga.utilities;
 
 import java.io.File;
 import java.util.List;
-
-import static utilities.TTYInputFileDataReader.getAllFilesFromInputDataFolder;
 
 public class ModelParameters {
 

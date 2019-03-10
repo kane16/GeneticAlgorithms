@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" prefHeight="768.0" prefWidth="1074.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.guminski.ga.controller.PopulationWindowController">
+   <children>
+      <JFXButton fx:id="importButton" layoutX="912.0" layoutY="14.0" prefHeight="33.0" prefWidth="152.0" style="-fx-border-color: black;" text="Import z CSV" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="14.0">
+         <font>
+            <Font name="Lucida Sans Regular" size="14.0" />
+         </font>
+      </JFXButton>
+       <JFXTreeTableView fx:id="treeTable" layoutX="9.0" layoutY="55.0" prefHeight="660.0" prefWidth="1059.0" AnchorPane.bottomAnchor="53.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="55.0" />
+       <JFXButton layoutX="908.0" layoutY="721.0" prefHeight="33.0" prefWidth="152.0" style="-fx-border-color: black;" text="Zapisz" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="10.0">
+         <font>
+            <Font name="Lucida Sans Regular" size="14.0" />
+         </font>
+      </JFXButton>
+      <JFXTextField fx:id="scenarioNameTextField" layoutX="14.0" layoutY="18.0" promptText="Nazwa Scenariusza" />
+      <JFXComboBox fx:id="tableNameChoice" layoutX="354.0" layoutY="18.0" prefHeight="25.0" prefWidth="152.0" promptText="Wybór tabeli" visible="false" />
+      <Label fx:id="workingData" layoutX="546.0" layoutY="18.0" prefHeight="25.0" prefWidth="354.0" visible="false" AnchorPane.rightAnchor="174.0" AnchorPane.topAnchor="18.0" />
+      <StackPane fx:id="popupPane" layoutX="238.0" layoutY="7.0" prefHeight="7.0" prefWidth="576.0" AnchorPane.topAnchor="7.0" />
+   </children>
+</AnchorPane>

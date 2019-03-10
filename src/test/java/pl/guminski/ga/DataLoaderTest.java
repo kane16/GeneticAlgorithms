@@ -1,18 +1,19 @@
-package dataLoaderCheck;
+package pl.guminski.ga;
 
-import utilities.TTYInputFileDataReader;
-import models.dataInput.DataInputContainer;
-import models.dataInput.NodeCoord;
 import org.junit.Test;
+import pl.guminski.ga.models.dataInput.DataInputContainer;
+import pl.guminski.ga.models.dataInput.NodeCoord;
+import pl.guminski.ga.utilities.TTYInputFileDataReader;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import static dataProcessing.OptimizationCalculations.getDistanceBetweenCities;
-import static dataProcessing.OptimizationCalculations.getTotalDistanceFromChromosome;
-import static utilities.DataInputExtractor.getDataInputContainerFromFile;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static pl.guminski.ga.dataProcessing.OptimizationCalculations.getDistanceBetweenCities;
+import static pl.guminski.ga.dataProcessing.OptimizationCalculations.getTotalDistanceFromChromosome;
+import static pl.guminski.ga.dataProcessing.OptimizationModel.getRandomChromosome;
+import static pl.guminski.ga.dataProcessing.OptimizationModel.getRandomChromosomeStringRepresentation;
+import static pl.guminski.ga.utilities.DataInputExtractor.getDataInputContainerFromFile;
 
 
 public class DataLoaderTest {
@@ -73,6 +74,14 @@ public class DataLoaderTest {
         assertEquals(2, container.getItems().get(0).getNode());
         assertEquals(52, container.getNodeCoordList().size());
         assertEquals(51, container.getItems().size());
+    }
+
+    @Test
+    public void testChromosomeGeneration(){
+        StringBuilder chromosome = new StringBuilder();
+        System.out.println(getRandomChromosomeStringRepresentation(
+                getRandomChromosome(60)));
+
     }
 
 }

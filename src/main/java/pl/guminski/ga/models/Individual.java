@@ -1,4 +1,4 @@
-package models;
+package pl.guminski.ga.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

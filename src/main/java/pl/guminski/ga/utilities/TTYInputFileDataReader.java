@@ -1,4 +1,4 @@
-package utilities;
+package pl.guminski.ga.utilities;
 
 import java.io.File;
 import java.util.Arrays;

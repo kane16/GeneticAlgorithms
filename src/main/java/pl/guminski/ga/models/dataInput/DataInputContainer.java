@@ -1,4 +1,4 @@
-package models.dataInput;
+package pl.guminski.ga.models.dataInput;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

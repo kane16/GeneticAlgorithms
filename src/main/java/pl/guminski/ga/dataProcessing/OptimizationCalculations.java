@@ -1,7 +1,7 @@
-package dataProcessing;
+package pl.guminski.ga.dataProcessing;
 
-import models.dataInput.NodeCoord;
-import models.dataInput.ThiefData;
+import pl.guminski.ga.models.dataInput.NodeCoord;
+import pl.guminski.ga.models.dataInput.ThiefData;
 
 import java.util.List;
 
