@@ -1,5 +1,6 @@
 package pl.guminski.ga.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.guminski.ga.models.Individual;
 
@@ -10,6 +11,12 @@ import java.util.List;
 @Service
 public class ChromosomeGenerationService {
 
+    @Autowired
+    ParametersService parametersService;
+
+    @Autowired
+    OptimizationService optimizationService;
+
     public List<Individual> generateRandomIndividuals(int coordsSize, int numberOfIndividuals){
 
         List<Individual> individuals = new ArrayList<>();
@@ -18,6 +25,9 @@ public class ChromosomeGenerationService {
             Individual individual = new Individual();
             individual.setIndex(i+1);
             individual.setChromosome(getRandomChromosome(coordsSize));
+            individual.setFitness(optimizationService
+                    .getFitnessValue(parametersService.getDataInputContainer(),
+                            individual.getChromosome()));
             individuals.add(individual);
         }
 

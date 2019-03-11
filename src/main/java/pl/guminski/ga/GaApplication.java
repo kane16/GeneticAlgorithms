@@ -38,7 +38,7 @@ public class GaApplication extends Application {
         primaryStage.setX((primScreenBounds.getWidth() - 1280) / 2);
         primaryStage.setY((primScreenBounds.getHeight() - 768) / 2);
         primaryStage.setResizable(true);
-        primaryStage.setTitle("Rozwiązanie problemu podróżującego złodzieja");
+        primaryStage.setTitle("Travelling Thief simulation");
         primaryStage.setScene(window);
         primaryStage.show();
     }

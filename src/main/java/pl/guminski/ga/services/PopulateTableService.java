@@ -20,7 +20,12 @@ public class PopulateTableService {
     @Autowired
     SimulationService simulationService;
 
+    @Autowired
+    FormatService formatService;
+
     public void populateTable(JFXTreeTableView treeTable, boolean isSimulationTable){
+        formatService.setDecimalFormat();
+        formatService.setIntegerFormat();
         JFXTreeTableColumn<TreeChromosome, String> chromosomeNumber = getChromosomeNumber();
         JFXTreeTableColumn<TreeChromosome, String> fitnessValue = getChromosomeFitness();
         JFXTreeTableColumn<TreeChromosome, String> generationValue = getChromosomeGeneration();
@@ -49,7 +54,8 @@ public class PopulateTableService {
         generationValue.setStyle("-fx-alignment: center;");
         generationValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeChromosome, String> param) -> {
             if(generationValue.validateValue(param)) {
-                return param.getValue().getValue().fitness;
+                return new SimpleStringProperty(formatService.decimalFormat
+                        .format(param.getValue().getValue().fitness));
             } else {
                 return generationValue.getComputedValue(param);
             }

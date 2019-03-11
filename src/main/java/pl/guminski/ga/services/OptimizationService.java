@@ -67,4 +67,9 @@ public class OptimizationService {
         return time;
     }
 
+    public double getFitnessValue(DataInputContainer dataInputContainer, List<Integer> chromosome){
+        return getTotalProfitFromChromosome(dataInputContainer, chromosome) -
+                getTotalTimeFromChromosome(dataInputContainer, chromosome);
+    }
+
 }
