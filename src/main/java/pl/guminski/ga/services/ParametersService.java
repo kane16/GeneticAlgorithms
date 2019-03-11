@@ -6,10 +6,10 @@ import pl.guminski.ga.models.dataInput.DataInputContainer;
 @Service
 public class ParametersService {
 
-    private double Pm = 0.22;
-    private double Px = 0.33;
+    private double Pm = 0.01;
+    private double Px = 0.7;
     private int pop_size = 100;
-    private int gen = 10;
+    private int tour = 5;
     private DataInputContainer dataInputContainer;
 
     public double getPm() {
@@ -36,12 +36,12 @@ public class ParametersService {
         this.pop_size = pop_size;
     }
 
-    public int getGen() {
-        return gen;
+    public int getTour() {
+        return tour;
     }
 
-    public void setGen(int gen) {
-        this.gen = gen;
+    public void setTour(int tour) {
+        this.tour = tour;
     }
 
     public int getChromosome_size() {

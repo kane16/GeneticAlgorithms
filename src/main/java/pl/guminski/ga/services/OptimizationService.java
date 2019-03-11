@@ -8,8 +8,10 @@ import pl.guminski.ga.models.dataInput.Item;
 import pl.guminski.ga.models.dataInput.NodeCoord;
 import pl.guminski.ga.models.dataInput.ThiefData;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,6 +72,17 @@ public class OptimizationService {
     public double getFitnessValue(DataInputContainer dataInputContainer, List<Integer> chromosome){
         return getTotalProfitFromChromosome(dataInputContainer, chromosome) -
                 getTotalTimeFromChromosome(dataInputContainer, chromosome);
+    }
+
+    public List<Integer> performMutationOperationAndGetMutatedChromosome(List<Integer> chromosome){
+        Random r = new Random();
+        Collections.swap(chromosome, r.nextInt(chromosome.size()), r.nextInt(chromosome.size()));
+        return chromosome;
+    }
+
+    public List<Integer> performPMXAndGetCrossedChromosomes(List<Integer> chromosome1,
+                                                            List<Integer> chromosome2){
+        return null;
     }
 
 }

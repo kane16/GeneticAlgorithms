@@ -114,4 +114,12 @@ public class GaApplicationTests {
                 chromosomeGenerationService.getRandomChromosome(container.getNodeCoordList().size())));
     }
 
+    @Test
+    public void testMutation(){
+        List<Integer> chromosome = chromosomeGenerationService.getRandomChromosome(10);
+        System.out.println(getRandomChromosomeStringRepresentation(chromosome));
+        System.out.println(getRandomChromosomeStringRepresentation(
+                optimizationService.performMutationOperationAndGetMutatedChromosome(chromosome)));
+    }
+
 }

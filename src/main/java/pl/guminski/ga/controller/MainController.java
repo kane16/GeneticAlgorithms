@@ -3,10 +3,12 @@ package pl.guminski.ga.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -35,6 +37,9 @@ public class MainController {
     DataExtractionService dataExtractionService;
 
     @FXML
+    private JFXButton runSimulationButton;
+
+    @FXML
     private JFXButton showSimulationTableOutputButton;
 
     @FXML
@@ -59,6 +64,12 @@ public class MainController {
     private JFXButton showInitialPopulationButton;
 
     @FXML
+    private Label progressStatus;
+
+    @FXML
+    private JFXProgressBar progressBar;
+
+    @FXML
     private BorderPane mainPane;
 
     public void initialize(){
@@ -73,6 +84,8 @@ public class MainController {
 
         this.showSimulationVisualisationOutputButton.setDisable(true);
 
+        runSimulationButton.setDisable(true);
+
         simulationComboBox.setItems(scenarioNames);
 
         showInitialPopulationButton.setDisable(true);
@@ -83,8 +96,7 @@ public class MainController {
                 parametersService.setDataInputContainer(
                         dataExtractionService.getDataInputContainerFromFile(
                                 dataExtractionService.getDataInputFile(newValue)));
-                simulationService.populateModel();
-                showInitialPopulationButton.setDisable(false);
+                runSimulationButton.setDisable(false);
             }
         });
 
@@ -96,6 +108,15 @@ public class MainController {
 
     public void showPopulationScreen(){
         routingService.openToolbarWindow("/views/ShowPopulationWindow.fxml", mainPane, applicationContext);
+    }
+
+    public void startSimulation(){
+        progressStatus.setText("Populating model");
+        progressBar.setProgress(0);
+        simulationService.populateModel();
+        progressBar.setProgress(100);
+        progressStatus.setText("Simulation finished");
+        showInitialPopulationButton.setDisable(false);
     }
 
 }
