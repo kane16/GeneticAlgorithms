@@ -17,6 +17,9 @@ public class ChromosomeGenerationService {
     @Autowired
     OptimizationService optimizationService;
 
+    @Autowired
+    SimulationService simulationService;
+
     public List<Individual> generateRandomIndividuals(int coordsSize, int numberOfIndividuals){
 
         List<Individual> individuals = new ArrayList<>();
@@ -29,6 +32,8 @@ public class ChromosomeGenerationService {
                     .getFitnessValue(parametersService.getDataInputContainer(),
                             individual.getChromosome()));
             individuals.add(individual);
+            if(i%100 == 0){
+            }
         }
 
         return individuals;
