@@ -1,5 +1,6 @@
 package pl.guminski.ga.services;
 
+import javafx.concurrent.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.guminski.ga.models.Individual;
@@ -32,8 +33,6 @@ public class ChromosomeGenerationService {
                     .getFitnessValue(parametersService.getDataInputContainer(),
                             individual.getChromosome()));
             individuals.add(individual);
-            if(i%100 == 0){
-            }
         }
 
         return individuals;
