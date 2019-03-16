@@ -11,15 +11,17 @@ import java.io.IOException;
 @Service
 public class RoutingService {
 
-    public void openToolbarWindow(String resource, BorderPane mainPane, ApplicationContext applicationContext){
+    public Parent openToolbarWindow(String resource, BorderPane mainPane, ApplicationContext applicationContext){
         try {
             Parent selectedWindow;
             FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
             loader.setControllerFactory(applicationContext::getBean);
             selectedWindow = loader.load();
             mainPane.setCenter(selectedWindow);
+            return selectedWindow;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 

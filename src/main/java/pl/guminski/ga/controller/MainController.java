@@ -11,6 +11,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
@@ -21,6 +22,7 @@ import pl.guminski.ga.services.DataExtractionService;
 import pl.guminski.ga.services.ParametersService;
 import pl.guminski.ga.services.RoutingService;
 import pl.guminski.ga.services.SimulationService;
+import pl.guminski.ga.services.SimulationTask.SimulationTask;
 
 @Controller
 public class MainController {
@@ -58,6 +60,8 @@ public class MainController {
     @FXML
     private JFXTextField PxField;
 
+    Parent selectedWindow;
+
     @FXML
     private JFXTextField popSizeField;
 
@@ -90,11 +94,11 @@ public class MainController {
 
         runSimulationButton.setDisable(true);
 
+        progressBar.setProgress(0);
+
         simulationComboBox.setItems(scenarioNames);
 
         showInitialPopulationButton.setDisable(true);
-
-        progressBar.setProgress(0);
 
         simulationComboBox.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) ->
         {
@@ -113,33 +117,29 @@ public class MainController {
     }
 
     public void showPopulationScreen(){
-        routingService.openToolbarWindow("/views/ShowPopulationWindow.fxml", mainPane, applicationContext);
+        selectedWindow = routingService.openToolbarWindow("/views/ShowPopulationWindow.fxml", mainPane, applicationContext);
     }
 
     public void startSimulation(){
-        Task simulationTask = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                simulationService.populateModel();
-                this.updateProgress(10, 100);
-                return null;
-            }
-        };
+        mainPane.getChildren().remove(selectedWindow);
+        showInitialPopulationButton.setDisable(true);
+        SimulationTask simulationTask = new SimulationTask(simulationService);
+        progressBar.progressProperty().unbind();
+        progressStatus.textProperty().unbind();
+        progressStatus.textProperty().bind(simulationTask.messageProperty());
         progressBar.progressProperty().bind(simulationTask.progressProperty());
-        simulationTask.addEventHandler(WorkerStateEvent.WORKER_STATE_RUNNING, new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                progressStatus.setText("Populating model");
-            }
-        });
-        simulationTask.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                progressStatus.setText("Model populated");
-            }
-        });
-        new Thread(simulationTask).run();
-        showInitialPopulationButton.setDisable(false);
+        simulationTask.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
+                new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent event) {
+                        progressStatus.textProperty().unbind();
+                        progressStatus.setText("Model Populated");
+                        showInitialPopulationButton.setDisable(false);
+                    }
+                });
+        Thread thread = new Thread(simulationTask);
+        thread.setDaemon(true);
+        thread.start();
     }
 
 }

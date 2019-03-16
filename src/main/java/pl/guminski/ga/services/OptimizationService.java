@@ -8,14 +8,14 @@ import pl.guminski.ga.models.dataInput.Item;
 import pl.guminski.ga.models.dataInput.NodeCoord;
 import pl.guminski.ga.models.dataInput.ThiefData;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class OptimizationService {
+
+    @Autowired
+    ParametersService parametersService;
 
     @Autowired
     DistanceCalculationService distanceCalculationService;
@@ -70,13 +70,32 @@ public class OptimizationService {
     }
 
     public double getFitnessValue(DataInputContainer dataInputContainer, List<Integer> chromosome){
-        return getTotalProfitFromChromosome(dataInputContainer, chromosome) -
+        return getTotalProfitFromChromosome(dataInputContainer, chromosome) /
                 getTotalTimeFromChromosome(dataInputContainer, chromosome);
     }
 
     public List<Integer> performMutationOperationAndGetMutatedChromosome(List<Integer> chromosome){
         Random r = new Random();
-        Collections.swap(chromosome, r.nextInt(chromosome.size()), r.nextInt(chromosome.size()));
+        ArrayList<Integer> chosenToMutate = new ArrayList<Integer>();
+        for(int i=0; i<chromosome.size(); i++){
+            double prob = r.nextDouble();
+            if(prob < parametersService.getPm()){
+                int toMutation = r.nextInt(chromosome.size());
+                if(toMutation != i && !chosenToMutate.contains(i) && !chosenToMutate.contains(toMutation)){
+                    chosenToMutate.add(i);
+                    chosenToMutate.add(toMutation);
+                    Collections.swap(chromosome, i, toMutation);
+                }else {
+                    for(int j=0 ; j<chromosome.size();j++){
+                        if(i != j && !chosenToMutate.contains(i) && !chosenToMutate.contains(j)){
+                            chosenToMutate.add(i);
+                            chosenToMutate.add(j);
+                            Collections.swap(chromosome, i, j);
+                        }
+                    }
+                }
+            }
+        }
         return chromosome;
     }
 
