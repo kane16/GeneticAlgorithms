@@ -8,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -22,7 +21,6 @@ import pl.guminski.ga.services.DataExtractionService;
 import pl.guminski.ga.services.ParametersService;
 import pl.guminski.ga.services.RoutingService;
 import pl.guminski.ga.services.SimulationService;
-import pl.guminski.ga.services.SimulationTask.SimulationTask;
 
 @Controller
 public class MainController {
@@ -109,7 +107,13 @@ public class MainController {
                 runSimulationButton.setDisable(false);
             }
         });
+        popSizeField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try{
+                parametersService.setPop_size(Integer.parseInt(newValue));
+            }catch (Exception exc){
 
+            }
+        });
         PmField.setText(String.valueOf(parametersService.getPm()));
         PxField.setText(String.valueOf(parametersService.getPx()));
         popSizeField.setText(String.valueOf(parametersService.getPop_size()));
@@ -123,9 +127,19 @@ public class MainController {
     public void startSimulation(){
         mainPane.getChildren().remove(selectedWindow);
         showInitialPopulationButton.setDisable(true);
-        SimulationTask simulationTask = new SimulationTask(simulationService);
         progressBar.progressProperty().unbind();
         progressStatus.textProperty().unbind();
+        Task simulationTask = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                this.updateMessage("Populating model");
+                this.updateProgress(5, 100);
+                simulationService.populateModel();
+                this.updateProgress(10, 100);
+                this.updateMessage("Model populated");
+                return null;
+            }
+        };
         progressStatus.textProperty().bind(simulationTask.messageProperty());
         progressBar.progressProperty().bind(simulationTask.progressProperty());
         simulationTask.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,

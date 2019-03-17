@@ -21,8 +21,6 @@ public class SimulationService {
 
     private List<Individual> population;
 
-    private Task simulationProgress;
-
     public void populateModel(){
         population = chromosomeGenerationService.generateRandomIndividuals(parametersService
                 .getDataInputContainer().getNodeCoordList().size(), parametersService.getPop_size());
@@ -35,13 +33,5 @@ public class SimulationService {
 
     public void setPopulation(List<Individual> population) {
         this.population = population;
-    }
-
-    public Task getSimulationProgress() {
-        return simulationProgress;
-    }
-
-    public void setSimulationProgress(Task simulationProgress) {
-        this.simulationProgress = simulationProgress;
     }
 }
