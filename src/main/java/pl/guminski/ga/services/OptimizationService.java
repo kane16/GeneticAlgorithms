@@ -107,9 +107,4 @@ public class OptimizationService {
         return chromosome;
     }
 
-    public List<Integer> performPMXAndGetCrossedChromosomes(List<Integer> chromosome1,
-                                                            List<Integer> chromosome2){
-        return null;
-    }
-
 }

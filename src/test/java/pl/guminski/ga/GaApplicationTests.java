@@ -10,6 +10,7 @@ import pl.guminski.ga.models.dataInput.NodeCoord;
 import pl.guminski.ga.services.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -40,6 +41,9 @@ public class GaApplicationTests {
 
     @Autowired
     RouletteSelectionService rouletteSelectionService;
+
+    @Autowired
+    CrossoverService crossoverService;
 
     @Test
     public void fileFoundTest(){
@@ -134,6 +138,17 @@ public class GaApplicationTests {
                 dataExtractionService.getDataInputFile("easy_0")));
         simulationService.populateModel();
         rouletteSelectionService.makeSelectionWithRoulette(simulationService.getPopulation());
+    }
+
+    @Test
+    public void testCrossover(){
+        ArrayList<Integer> chromosome =  new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+        ArrayList<Integer> chromosome2 = new ArrayList<>(Arrays.asList(7, 8, 9, 1, 7, 2, 4, 5, 6));
+        List<Integer> output = crossoverService.performPMXAndGetCrossedChromosomes((List<Integer>) chromosome.clone(),
+                (List<Integer>) chromosome2.clone());
+        System.out.println(Arrays.toString(chromosome.toArray()));
+        System.out.println(Arrays.toString(chromosome2.toArray()));
+        System.out.println(Arrays.toString(output.toArray()));
     }
 
 
