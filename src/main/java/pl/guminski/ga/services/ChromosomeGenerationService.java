@@ -29,10 +29,16 @@ public class ChromosomeGenerationService {
             Individual individual = new Individual();
             individual.setIndex(i+1);
             individual.setChromosome(getRandomChromosome(coordsSize));
-            individual.setFitness(optimizationService
-                    .getFitnessValue(parametersService.getDataInputContainer(),
-                            individual.getChromosome()));
             individuals.add(individual);
+        }
+
+        double sumOfWeights = optimizationService.getFitnessSum(individuals,
+                parametersService.getDataInputContainer());
+
+        for(Individual i: individuals){
+            i.setFitness(optimizationService
+                    .getFitnessValue(parametersService.getDataInputContainer(),
+                            i.getChromosome(), sumOfWeights));
         }
 
         return individuals;

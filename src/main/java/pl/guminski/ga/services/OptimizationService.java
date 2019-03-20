@@ -3,6 +3,7 @@ package pl.guminski.ga.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.guminski.ga.exceptions.NoItemFoundInCity;
+import pl.guminski.ga.models.Individual;
 import pl.guminski.ga.models.dataInput.DataInputContainer;
 import pl.guminski.ga.models.dataInput.Item;
 import pl.guminski.ga.models.dataInput.NodeCoord;
@@ -69,8 +70,15 @@ public class OptimizationService {
         return time;
     }
 
-    public double getFitnessValue(DataInputContainer dataInputContainer, List<Integer> chromosome){
-        return getTotalProfitFromChromosome(dataInputContainer, chromosome) /
+    public double getFitnessSum(List<Individual> individuals, DataInputContainer dataInputContainer){
+        return individuals.stream()
+                .mapToDouble(individual ->
+                        getTotalProfitFromChromosome(dataInputContainer, individual.getChromosome()) - getTotalTimeFromChromosome(dataInputContainer, individual.getChromosome()))
+                .sum();
+    }
+
+    public double getFitnessValue(DataInputContainer dataInputContainer, List<Integer> chromosome, double sumOfWeights){
+        return getTotalProfitFromChromosome(dataInputContainer, chromosome) -
                 getTotalTimeFromChromosome(dataInputContainer, chromosome);
     }
 

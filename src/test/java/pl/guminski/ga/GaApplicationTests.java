@@ -7,10 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.guminski.ga.models.dataInput.DataInputContainer;
 import pl.guminski.ga.models.dataInput.NodeCoord;
-import pl.guminski.ga.services.ChromosomeGenerationService;
-import pl.guminski.ga.services.DataExtractionService;
-import pl.guminski.ga.services.DistanceCalculationService;
-import pl.guminski.ga.services.OptimizationService;
+import pl.guminski.ga.services.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +31,15 @@ public class GaApplicationTests {
 
     @Autowired
     OptimizationService optimizationService;
+
+    @Autowired
+    SimulationService simulationService;
+
+    @Autowired
+    ParametersService parametersService;
+
+    @Autowired
+    RouletteSelectionService rouletteSelectionService;
 
     @Test
     public void fileFoundTest(){
@@ -121,5 +127,15 @@ public class GaApplicationTests {
         System.out.println(getRandomChromosomeStringRepresentation(
                 optimizationService.performMutationOperationAndGetMutatedChromosome(chromosome)));
     }
+
+    @Test
+    public void testRouletteSelection(){
+        parametersService.setDataInputContainer(dataExtractionService.getDataInputContainerFromFile(
+                dataExtractionService.getDataInputFile("easy_0")));
+        simulationService.populateModel();
+        rouletteSelectionService.makeSelectionWithRoulette(simulationService.getPopulation());
+    }
+
+
 
 }
