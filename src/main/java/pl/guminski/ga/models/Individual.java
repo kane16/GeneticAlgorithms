@@ -17,6 +17,7 @@ public class Individual {
     private int generation;
     private List<Integer> chromosome;
     private double fitness;
+    private double fitnessNormalized;
     private double rouletteSum;
 
 }

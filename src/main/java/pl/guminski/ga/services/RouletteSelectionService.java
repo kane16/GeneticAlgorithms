@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.guminski.ga.models.Individual;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RouletteSelectionService {
@@ -15,18 +16,26 @@ public class RouletteSelectionService {
     ParametersService parametersService;
 
     public void setRouletteMap(List<Individual> orderedPopulation){
-        double sum = 0;
+        final double sum = orderedPopulation.stream().mapToDouble(Individual::getFitness).sum();
+        orderedPopulation.forEach(individual ->
+                individual.setFitnessNormalized(getNormalizedFitness(individual, sum)));
+        double normalizedSum = 0;
         for(Individual individual: orderedPopulation){
-            sum += individual.getFitness();
-            individual.setRouletteSum(sum);
+            normalizedSum += individual.getFitnessNormalized();
+            individual.setRouletteSum(normalizedSum);
         }
-        this.rouletteSum = sum;
+        this.rouletteSum = normalizedSum;
+    }
+
+    public double getNormalizedFitness(Individual individual, double fitnessSum){
+        return individual.getFitness()/fitnessSum;
     }
 
     public List<Individual> makeSelectionWithRoulette(List<Individual> population){
         setRouletteMap(population);
         List<Individual> individuals = new ArrayList<>();
         int selectionSize = parametersService.getPop_size()/parametersService.getTour();
+        setRouletteMap(population);
         while(individuals.size() < selectionSize){
             double rouletteRandom = Math.random()*rouletteSum;
             population.stream()
