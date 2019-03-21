@@ -143,9 +143,8 @@ public class GaApplicationTests {
     @Test
     public void testCrossover(){
         ArrayList<Integer> chromosome =  new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
-        ArrayList<Integer> chromosome2 = new ArrayList<>(Arrays.asList(7, 8, 9, 1, 7, 2, 4, 5, 6));
-        List<Integer> output = crossoverService.performPMXAndGetCrossedChromosomes((List<Integer>) chromosome.clone(),
-                (List<Integer>) chromosome2.clone());
+        ArrayList<Integer> chromosome2 = new ArrayList<>(Arrays.asList(2, 8, 9, 1, 7, 3, 4, 5, 6));
+        List<Integer> output = crossoverService.performPMXAndGetCrossedChromosomes(chromosome, chromosome2);
         System.out.println(Arrays.toString(chromosome.toArray()));
         System.out.println(Arrays.toString(chromosome2.toArray()));
         System.out.println(Arrays.toString(output.toArray()));

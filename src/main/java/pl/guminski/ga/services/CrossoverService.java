@@ -3,8 +3,7 @@ package pl.guminski.ga.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class CrossoverService {
@@ -26,15 +25,34 @@ public class CrossoverService {
     }
 
 
-    public List<Integer> swapAndRepairChromosome(List<Integer> chromosome1, List<Integer> swapSegment,
+    public List<Integer> swapAndRepairChromosome(List<Integer> chromosome, List<Integer> swapSegment,
                                                  int cutpointLeft, int cutpointRight){
         int i = cutpointLeft;
+        List<Integer> crossChromosome = new ArrayList<>(chromosome);
+        Map<Integer, Integer> toReplaceMap = new HashMap<>();
         while(i<cutpointRight){
-            chromosome1.set(chromosome1.indexOf(swapSegment.get(i-cutpointLeft)), chromosome1.get(i));
-            chromosome1.set(i, swapSegment.get(i-cutpointLeft));
+            int index = chromosome.indexOf(swapSegment.get(i-cutpointLeft));
+            if(index < cutpointLeft || index >= cutpointRight)
+                toReplaceMap.put(index, 0);
             i++;
         }
-        return chromosome1;
+        i=cutpointLeft;
+        for(Integer key: toReplaceMap.keySet()){
+            while(i < cutpointRight){
+                if(!swapSegment.contains(chromosome.get(i))){
+                    crossChromosome.set(key, crossChromosome.get(i));
+                    i++;
+                    break;
+                }
+                i++;
+            }
+        }
+        i=cutpointLeft;
+        while(i<cutpointRight){
+            crossChromosome.set(i, swapSegment.get(i-cutpointLeft));
+            i++;
+        }
+        return crossChromosome;
     }
 
 }
