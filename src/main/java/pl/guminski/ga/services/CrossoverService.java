@@ -14,7 +14,7 @@ public class CrossoverService {
     public List<Integer> performPMXAndGetCrossedChromosomes(List<Integer> chromosome1,
                                                             List<Integer> chromosome2){
         Random r = new Random();
-        int cutpointLeft = r.nextInt(chromosome1.size());
+        int cutpointLeft = r.nextInt(chromosome1.size()-1);
         int cutpointRight = r.nextInt(chromosome1.size());
         while(cutpointLeft >= cutpointRight){
             cutpointRight = r.nextInt(chromosome1.size());
