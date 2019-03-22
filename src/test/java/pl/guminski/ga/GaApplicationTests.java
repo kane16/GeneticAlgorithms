@@ -46,6 +46,12 @@ public class GaApplicationTests {
     @Autowired
     CrossoverService crossoverService;
 
+    @Autowired
+    GreedySelectionService greedySelectionService;
+
+    @Autowired
+    RankSelectionService rankSelectionService;
+
     @Test
     public void fileFoundTest(){
         assertNotNull(dataExtractionService.getDataInputFile("easy_0"));
@@ -138,7 +144,7 @@ public class GaApplicationTests {
         parametersService.setDataInputContainer(dataExtractionService.getDataInputContainerFromFile(
                 dataExtractionService.getDataInputFile("easy_0")));
         simulationService.populateModel();
-        rouletteSelectionService.makeSelectionWithRoulette(simulationService.getPopulation());
+        rouletteSelectionService.makeSelection(simulationService.getPopulation());
     }
 
     @Test
@@ -161,9 +167,26 @@ public class GaApplicationTests {
         parametersService.setDataInputContainer(dataExtractionService.getDataInputContainerFromFile(
                 dataExtractionService.getDataInputFile("easy_0")));
         simulationService.populateModel();
-        List<Individual> population = rouletteSelectionService.makeSelectionWithRoulette(simulationService.getPopulation());
-        System.out.println(Arrays.toString(population.stream().
+        List<Individual> population = rouletteSelectionService.makeSelection(simulationService.getPopulation());
+        System.out.println(Arrays.toString(simulationService.getPopulation().stream().
                 map(Individual::getRouletteSum).toArray()));
+    }
+
+    @Test
+    public void testGreedySelection(){
+        parametersService.setDataInputContainer(dataExtractionService.getDataInputContainerFromFile(
+                dataExtractionService.getDataInputFile("easy_0")));
+        Individual individual = greedySelectionService.getGreedyBestFitnessChromosome();
+        System.out.println(Arrays.toString(individual.getChromosome().toArray()));
+        System.out.println(individual.getFitness());
+    }
+
+    @Test
+    public void testRankSelection(){
+        parametersService.setDataInputContainer(dataExtractionService.getDataInputContainerFromFile(
+                dataExtractionService.getDataInputFile("easy_0")));
+        simulationService.populateModel();
+        rankSelectionService.makeSelection(simulationService.getPopulation());
     }
 
 

@@ -57,7 +57,7 @@ public class OptimizationService {
                 nextCity = cities.get(chromosome.get(0)-1);
             else nextCity = cities.get(chromosome.get(i+1)-1);
             try{
-                Item item = getGreedyBestItemProfitFromCity(items, thiefData, chromosome.get(i)-1);
+                Item item = getGreedyBestItemProfitFromCity(items, thiefData, chromosome.get(i));
                 thiefData.setKnapsackLoad(thiefData.getKnapsackLoad()+item.getWeight());
                 thiefData.setProfit(thiefData.getProfit()+item.getProfit());
             }catch (NoItemFoundInCity exc){
@@ -73,11 +73,12 @@ public class OptimizationService {
     public double getFitnessSum(List<Individual> individuals, DataInputContainer dataInputContainer){
         return individuals.stream()
                 .mapToDouble(individual ->
-                        getTotalProfitFromChromosome(dataInputContainer, individual.getChromosome()) - getTotalTimeFromChromosome(dataInputContainer, individual.getChromosome()))
+                        getTotalProfitFromChromosome(dataInputContainer, individual.getChromosome()) -
+                                getTotalTimeFromChromosome(dataInputContainer, individual.getChromosome()))
                 .sum();
     }
 
-    public double getFitnessValue(DataInputContainer dataInputContainer, List<Integer> chromosome, double sumOfWeights){
+    public double getFitnessValue(DataInputContainer dataInputContainer, List<Integer> chromosome){
         return getTotalProfitFromChromosome(dataInputContainer, chromosome) -
                 getTotalTimeFromChromosome(dataInputContainer, chromosome);
     }

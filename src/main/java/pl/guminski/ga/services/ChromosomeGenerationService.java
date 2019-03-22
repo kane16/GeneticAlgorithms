@@ -38,7 +38,7 @@ public class ChromosomeGenerationService {
         for(Individual i: individuals){
             i.setFitness(optimizationService
                     .getFitnessValue(parametersService.getDataInputContainer(),
-                            i.getChromosome(), sumOfWeights));
+                            i.getChromosome()));
         }
 
         return individuals;

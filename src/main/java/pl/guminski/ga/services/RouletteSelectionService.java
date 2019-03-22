@@ -2,7 +2,9 @@ package pl.guminski.ga.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.guminski.ga.exceptions.NoItemFoundInCity;
 import pl.guminski.ga.models.Individual;
+import pl.guminski.ga.models.dataInput.Item;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,6 +16,9 @@ public class RouletteSelectionService {
 
     @Autowired
     ParametersService parametersService;
+
+    @Autowired
+    OptimizationService optimizationService;
 
     public void setRouletteMap(List<Individual> orderedPopulation){
         final double sum = orderedPopulation.stream().mapToDouble(Individual::getFitness).sum();
@@ -28,14 +33,13 @@ public class RouletteSelectionService {
     }
 
     public double getNormalizedFitness(Individual individual, double fitnessSum){
-        return individual.getFitness()/fitnessSum;
+        return Math.exp(50*individual.getFitness()/Math.abs(fitnessSum));
     }
 
-    public List<Individual> makeSelectionWithRoulette(List<Individual> population){
+    public List<Individual> makeSelection(List<Individual> population){
         setRouletteMap(population);
         List<Individual> individuals = new ArrayList<>();
         int selectionSize = parametersService.getPop_size()/parametersService.getTour();
-        setRouletteMap(population);
         while(individuals.size() < selectionSize){
             double rouletteRandom = Math.random()*rouletteSum;
             population.stream()

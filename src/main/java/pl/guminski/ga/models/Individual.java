@@ -18,6 +18,7 @@ public class Individual {
     private List<Integer> chromosome;
     private double fitness;
     private double fitnessNormalized;
+    private double rank;
     private double rouletteSum;
 
 }
