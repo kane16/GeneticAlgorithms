@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ThiefData {
+public class ThiefData implements Cloneable{
 
     private double minSpeed;
     private double maxSpeed;

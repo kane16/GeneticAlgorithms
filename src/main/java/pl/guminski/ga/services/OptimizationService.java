@@ -28,8 +28,8 @@ public class OptimizationService {
                 .max(Comparator.comparing(Item::getProfit)).orElseThrow(NoItemFoundInCity::new);
     }
 
-    public long getTotalProfitFromChromosome(DataInputContainer dataInputContainer, List<Integer> chromosome){
-        ThiefData thiefData = dataInputContainer.getThiefData();
+    public long getTotalProfitFromChromosome(DataInputContainer dataInputContainer, List<Integer> chromosome) {
+        final ThiefData thiefData = (ThiefData) dataInputContainer.getThiefData();
         List<NodeCoord> cities = chromosome.stream()
                 .map(gen -> dataInputContainer.getNodeCoordList().get(gen-1))
                 .collect(Collectors.toList());
@@ -42,7 +42,10 @@ public class OptimizationService {
             }catch (NoItemFoundInCity exc){
             }
         } );
-        return thiefData.getProfit();
+        long profit = thiefData.getProfit();
+        thiefData.setKnapsackLoad(0);
+        thiefData.setProfit(0);
+        return profit;
     }
 
     public double getTotalTimeFromChromosome(DataInputContainer dataInputContainer, List<Integer> chromosome){

@@ -17,10 +17,10 @@ import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import pl.guminski.ga.services.DataExtractionService;
-import pl.guminski.ga.services.ParametersService;
-import pl.guminski.ga.services.RoutingService;
-import pl.guminski.ga.services.SimulationService;
+import pl.guminski.ga.models.Individual;
+import pl.guminski.ga.services.*;
+
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -78,6 +78,18 @@ public class MainController {
     @FXML
     private BorderPane mainPane;
 
+    @Autowired
+    RankSelectionService rankSelectionService;
+
+    @Autowired
+    RouletteSelectionService rouletteSelectionService;
+
+    @Autowired
+    RandomSelectionService randomSelectionService;
+
+    @Autowired
+    GreedySelectionService greedySelectionService;
+
     public void initialize(){
 
         this.routingService = new RoutingService();
@@ -124,9 +136,17 @@ public class MainController {
         selectedWindow = routingService.openToolbarWindow("/views/ShowPopulationWindow.fxml", mainPane, applicationContext);
     }
 
+    public void showSimulationOutputScreen(){
+        selectedWindow = routingService.openToolbarWindow("/views/ShowOutputWindow.fxml", mainPane, applicationContext);
+    }
+
+
+
     public void startSimulation(){
         mainPane.getChildren().remove(selectedWindow);
         showInitialPopulationButton.setDisable(true);
+        showSimulationTableOutputButton.setDisable(true);
+        showSimulationVisualisationOutputButton.setDisable(true);
         progressBar.progressProperty().unbind();
         progressStatus.textProperty().unbind();
         Task simulationTask = new Task() {
@@ -136,7 +156,19 @@ public class MainController {
                 this.updateProgress(5, 100);
                 simulationService.populateModel();
                 this.updateProgress(10, 100);
-                this.updateMessage("Model populated");
+                this.updateMessage("Processing rank algorithm ...");
+                List<Individual> rankAlgorithmBestIndividuals =
+                        rankSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation());
+                this.updateProgress(45, 100);
+                this.updateMessage("Processing roulette algorithm...");
+                List<Individual> rouletteAlgorithmBestIndividuals =
+                        rouletteSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation());
+                this.updateProgress(80, 100);
+                this.updateMessage("Processing random algorithm...");
+                Individual randomBestIndividual = randomSelectionService.generatePopulationAndFindBestFitness();
+                this.updateProgress(90, 100);
+                Individual greedyBestIndividual = greedySelectionService.getGreedyBestFitnessChromosome();
+                this.updateProgress(100, 100);
                 return null;
             }
         };
@@ -147,8 +179,10 @@ public class MainController {
                     @Override
                     public void handle(WorkerStateEvent event) {
                         progressStatus.textProperty().unbind();
-                        progressStatus.setText("Model Populated");
+                        progressStatus.setText("Processing done.");
                         showInitialPopulationButton.setDisable(false);
+                        showSimulationTableOutputButton.setDisable(false);
+                        showSimulationVisualisationOutputButton.setDisable(false);
                     }
                 });
         Thread thread = new Thread(simulationTask);

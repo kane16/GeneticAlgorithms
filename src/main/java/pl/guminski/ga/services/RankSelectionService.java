@@ -4,14 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.guminski.ga.models.Individual;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class RankSelectionService {
+public class RankSelectionService extends GeneticAlgorithmService{
 
     @Autowired
     ParametersService parametersService;
@@ -24,8 +21,13 @@ public class RankSelectionService {
                 .collect(Collectors.toList());
         int sum = 0;
         for(int i=0; i<population.size();i++){
-            sum += i;
-            population.get(i).setRank(i);
+            if(i>0.9*population.size()){
+                sum += i*4;
+                population.get(i).setRank(i*4);
+            }else{
+                sum += i;
+                population.get(i).setRank(i);
+            }
         }
         double partialSum =0;
         for(int i=0; i<population.size();i++){
@@ -35,14 +37,21 @@ public class RankSelectionService {
         return partialSum;
     }
 
-    public List<Individual> makeSelection(List<Individual> population){
-        double partialSum = makePreparationForSelectionWithRank(population);
-        population = sortIndividualsBySum(population);
+    public List<Individual> makeSelection(List<Individual> initialPopulation){
         List<Individual> individuals = new ArrayList<>();
-        int selectionSize = parametersService.getPop_size()/parametersService.getTour();
-        while(individuals.size() < selectionSize){
+        List<Individual> tourPopulation = new ArrayList<>();
+        int selectionSize = parametersService.getTour();
+        Random random = new Random();
+        while(tourPopulation.size() < selectionSize){
+            int rouletteRandom = random.nextInt(initialPopulation.size());
+            if(!tourPopulation.contains(initialPopulation.get(rouletteRandom)))
+                tourPopulation.add(initialPopulation.get(rouletteRandom));
+        }
+        double partialSum = makePreparationForSelectionWithRank(tourPopulation);
+        tourPopulation = sortIndividualsBySum(tourPopulation);
+        while(individuals.size() < selectionSize/2){
             double rouletteRandom = Math.random()*partialSum;
-            population.stream()
+            tourPopulation.stream()
                     .filter(individual -> !individuals.contains(individual) && individual.getRank() >= rouletteRandom)
                     .findFirst().ifPresent(individuals::add);
         }

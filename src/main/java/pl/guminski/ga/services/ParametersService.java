@@ -9,9 +9,17 @@ public class ParametersService {
     private double Pm = 0.01;
     private double Px = 0.7;
     private int pop_size = 100;
-    private int gen = 100;
-    private int tour = 5;
+    private int generationNumber = 10;
+    private int tour = 80;
     private DataInputContainer dataInputContainer;
+
+    public int getGenerationNumber() {
+        return generationNumber;
+    }
+
+    public void setGenerationNumber(int generationNumber) {
+        this.generationNumber = generationNumber;
+    }
 
     public double getPm() {
         return Pm;

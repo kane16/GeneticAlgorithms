@@ -11,7 +11,10 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.guminski.ga.models.Individual;
 import pl.guminski.ga.models.treeModel.TreeChromosome;
+
+import java.util.List;
 
 
 @Service
@@ -23,7 +26,7 @@ public class PopulateTableService {
     @Autowired
     FormatService formatService;
 
-    public void populateTable(JFXTreeTableView treeTable, boolean isSimulationTable){
+    public void populateTable(JFXTreeTableView treeTable, boolean isSimulationTable, List<Individual> individuals){
         formatService.setDecimalFormat();
         formatService.setIntegerFormat();
         JFXTreeTableColumn<TreeChromosome, String> chromosomeNumber = getChromosomeNumber();
@@ -32,7 +35,7 @@ public class PopulateTableService {
         JFXTreeTableColumn<TreeChromosome, String> chromosomeValue = getChromosomeColumn();
 
         ObservableList<TreeChromosome> chromosomes = FXCollections.observableArrayList();
-        this.simulationService.getPopulation()
+        individuals
                 .forEach(individual -> chromosomes.add(new TreeChromosome((long) individual.getIndex(), individual)));
 
 
@@ -42,7 +45,7 @@ public class PopulateTableService {
         treeTable.getColumns().clear();
         treeTable.setRoot(root);
         if(isSimulationTable){
-            treeTable.getColumns().setAll(chromosomeNumber, fitnessValue, generationValue, chromosomeValue);
+            treeTable.getColumns().setAll(generationValue, fitnessValue);
         }else treeTable.getColumns().setAll(chromosomeNumber, fitnessValue, chromosomeValue);
         treeTable.setShowRoot(false);
         treeTable.setEditable(false);

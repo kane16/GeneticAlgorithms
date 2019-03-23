@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.guminski.ga.exceptions.NoItemFoundInCity;
 import pl.guminski.ga.models.Individual;
+import pl.guminski.ga.models.dataInput.DataInputContainer;
 import pl.guminski.ga.models.dataInput.Item;
 import pl.guminski.ga.models.dataInput.NodeCoord;
 

@@ -154,7 +154,7 @@ public class GaApplicationTests {
         int i=0;
         List<Integer> output = null;
         while(i<1000){
-            output = crossoverService.performPMXAndGetCrossedChromosomes(chromosome, chromosome2);
+            output = crossoverService.checkCrossoverMechanism(chromosome, chromosome2);
             i++;
         }
         System.out.println(Arrays.toString(chromosome.toArray()));
@@ -187,6 +187,15 @@ public class GaApplicationTests {
                 dataExtractionService.getDataInputFile("easy_0")));
         simulationService.populateModel();
         rankSelectionService.makeSelection(simulationService.getPopulation());
+    }
+
+    @Test
+    public void testGA() throws CloneNotSupportedException {
+        parametersService.setDataInputContainer(dataExtractionService.getDataInputContainerFromFile(
+                dataExtractionService.getDataInputFile("easy_0")));
+        simulationService.populateModel();
+        List<Individual> individuals = rouletteSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation());
+        System.out.println(Arrays.toString(individuals.stream().map(Individual::getFitness).toArray()));
     }
 
 

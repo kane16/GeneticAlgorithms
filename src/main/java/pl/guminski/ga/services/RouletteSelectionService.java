@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class RouletteSelectionService {
+public class RouletteSelectionService extends GeneticAlgorithmService{
 
     private double rouletteSum;
 
@@ -37,12 +37,19 @@ public class RouletteSelectionService {
     }
 
     public List<Individual> makeSelection(List<Individual> population){
-        setRouletteMap(population);
         List<Individual> individuals = new ArrayList<>();
-        int selectionSize = parametersService.getPop_size()/parametersService.getTour();
-        while(individuals.size() < selectionSize){
+        List<Individual> tourPopulation = new ArrayList<>();
+        Random random = new Random();
+        int selectionSize = parametersService.getTour();
+        while(tourPopulation.size() < selectionSize){
+            int rouletteRandom = random.nextInt(population.size());
+            if(!tourPopulation.contains(population.get(rouletteRandom)))
+                tourPopulation.add(population.get(rouletteRandom));
+        }
+        setRouletteMap(tourPopulation);
+        while(individuals.size() < selectionSize/2){
             double rouletteRandom = Math.random()*rouletteSum;
-            population.stream()
+            tourPopulation.stream()
                     .filter(individual -> !individuals.contains(individual) && individual.getRouletteSum() >= rouletteRandom)
                     .findFirst().ifPresent(individuals::add);
         }
