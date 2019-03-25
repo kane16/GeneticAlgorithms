@@ -7,6 +7,10 @@ public class TreeOutputTable extends RecursiveTreeObject<TreeOutputTable> {
 
     public int generation;
 
+    public double tourFitness;
+
+    public double tourStdDeviation;
+
     public double rankFitness;
 
     public double rankStdDeviation;

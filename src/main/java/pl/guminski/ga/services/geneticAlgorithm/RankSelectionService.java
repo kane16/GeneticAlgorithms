@@ -13,7 +13,7 @@ public class RankSelectionService extends GeneticAlgorithmService{
     @Autowired
     ParametersService parametersService;
 
-    public double makePreparationForSelectionWithRank(List<Individual> population){
+    public List<Individual> makePreparationForSelectionWithRank(List<Individual> population){
         double fitnessSum = population.stream().mapToDouble(Individual::getFitness).sum();
         population.forEach(individual ->
                 individual.setFitnessNormalized(getNormalizedFitness(individual, fitnessSum)));
@@ -28,27 +28,23 @@ public class RankSelectionService extends GeneticAlgorithmService{
             partialSum += i*1.0;
             population.get(i).setRank(partialSum/sum);
         }
-        return partialSum;
+        return population;
     }
 
-    public List<Individual> makeSelection(List<Individual> initialPopulation){
-        List<Individual> individuals = new ArrayList<>();
-        List<Individual> tourPopulation = new ArrayList<>();
-        int selectionSize = parametersService.getTour();
-        Random random = new Random();
-        while(tourPopulation.size() < selectionSize){
-            int rouletteRandom = random.nextInt(initialPopulation.size());
-            if(!tourPopulation.contains(initialPopulation.get(rouletteRandom)))
-                tourPopulation.add(initialPopulation.get(rouletteRandom));
-        }
-        double partialSum = makePreparationForSelectionWithRank(tourPopulation);
-        while(individuals.size() < selectionSize/2){
-            double rouletteRandom = Math.random()*partialSum;
-            tourPopulation.stream()
-                    .filter(individual -> !individuals.contains(individual) && individual.getRank() >= rouletteRandom)
-                    .findFirst().ifPresent(individuals::add);
-        }
-        return individuals;
+    public List<Individual> prepareSelection(List<Individual> initialPopulation){
+        return makePreparationForSelectionWithRank(initialPopulation);
+    }
+
+    public List<List<Integer>> makeSelection(List<Individual> preparedPopulation){
+        double rouletteRandom = Math.random();
+        List<List<Integer>> chromosomes = new ArrayList<>();
+        chromosomes.add(preparedPopulation.stream()
+                .filter(individual -> individual.getRank() >= rouletteRandom)
+                .findFirst().map(Individual::getChromosome).orElse(null));
+        chromosomes.add(preparedPopulation.stream()
+                .filter(individual -> individual.getRank() >= rouletteRandom)
+                .findFirst().map(Individual::getChromosome).orElse(null));
+        return chromosomes;
     }
 
     public double getNormalizedFitness(Individual individual, double fitnessSum){

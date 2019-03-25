@@ -34,6 +34,8 @@ public class PopulateTableService {
         formatService.setDecimalFormat();
         formatService.setIntegerFormat();
         JFXTreeTableColumn<TreeOutputTable, String> generationValue = getGenerationValue();
+        JFXTreeTableColumn<TreeOutputTable, String> tourValue = getTourFitnessValue();
+        JFXTreeTableColumn<TreeOutputTable, String> tourStdDev = getTourStdDevValue();
         JFXTreeTableColumn<TreeOutputTable, String> fitnessRankValue = getRankFitnessValue();
         JFXTreeTableColumn<TreeOutputTable, String> rankStdDeviation = getRankStdDevValue();
         JFXTreeTableColumn<TreeOutputTable, String> fitnessRouletteValue = getRouletteFitnessValue();
@@ -47,6 +49,8 @@ public class PopulateTableService {
         for(int i=0; i<parametersService.getGenerationNumber();i++){
             TreeOutputTable treeOutputTable = new TreeOutputTable();
             treeOutputTable.generation = i+1;
+            treeOutputTable.tourFitness = simulationService.tournamentAlgorithmBestIndividuals.get(i).getFitness();
+            treeOutputTable.tourStdDeviation = simulationService.tournamentAlgorithmBestIndividuals.get(i).getStdDeviation();
             treeOutputTable.rankFitness = simulationService.rankAlgorithmBestIndividuals.get(i).getFitness();
             treeOutputTable.rankStdDeviation = simulationService.rankAlgorithmBestIndividuals.get(i).getStdDeviation();
             treeOutputTable.rouletteFitness = simulationService.rouletteAlgorithmBestIndividuals.get(i).getFitness();
@@ -65,7 +69,8 @@ public class PopulateTableService {
         treeTable.getColumns().clear();
         treeTable.setRoot(root);
         if(table.equals("All algorithms")){
-            treeTable.getColumns().setAll(generationValue, fitnessRankValue, rankStdDeviation, fitnessRouletteValue,
+            treeTable.getColumns().setAll(generationValue, getTourFitnessValue(), getTourStdDevValue(),
+                    fitnessRankValue, rankStdDeviation, fitnessRouletteValue,
                     rouletteStdDeviation, fitnessGreedyValue, greedyStdDevValue, randomFitnessValue, randomStdDeviationValue);
         }else if(table.equals("Rank")){
             treeTable.getColumns().setAll(generationValue, fitnessRankValue, rankStdDeviation);
@@ -79,6 +84,36 @@ public class PopulateTableService {
         treeTable.setShowRoot(false);
         treeTable.setEditable(false);
 
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getTourStdDevValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> tourStdDevValue = new JFXTreeTableColumn<>("Tour std. dev.");
+        tourStdDevValue.setPrefWidth(100);
+        tourStdDevValue.setStyle("-fx-alignment: center;");
+        tourStdDevValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(tourStdDevValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().tourStdDeviation));
+            } else {
+                return tourStdDevValue.getComputedValue(param);
+            }
+        });
+        return tourStdDevValue;
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getTourFitnessValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> tourFitnessValue = new JFXTreeTableColumn<>("Tour fitness");
+        tourFitnessValue.setPrefWidth(100);
+        tourFitnessValue.setStyle("-fx-alignment: center;");
+        tourFitnessValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(tourFitnessValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().tourFitness));
+            } else {
+                return tourFitnessValue.getComputedValue(param);
+            }
+        });
+        return tourFitnessValue;
     }
 
     private JFXTreeTableColumn<TreeOutputTable, String> getRandomStdDeviationValue() {

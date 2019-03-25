@@ -24,6 +24,7 @@ public class SimulationService {
 
     public List<StatisticsIndividual> rankAlgorithmBestIndividuals;
     public List<StatisticsIndividual> rouletteAlgorithmBestIndividuals;
+    public List<StatisticsIndividual> tournamentAlgorithmBestIndividuals;
     public StatisticsIndividual randomBestIndividual;
     public StatisticsIndividual greedyBestIndividual;
 

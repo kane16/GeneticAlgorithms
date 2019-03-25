@@ -22,19 +22,12 @@ public class CrossoverService {
         return individuals.get(index1).getChromosome();
     }
 
-    public List<Integer> performPMXAndGetCrossedChromosomes(List<Individual> individuals){
-
+    public List<Integer> performPMXAndGetCrossedChromosomes(List<List<Integer>> chromosomes){
+        List<Integer> chromosome1 = chromosomes.get(0);
+        List<Integer> chromosome2 = chromosomes.get(1);
         Random r = new Random();
-        int index1 = r.nextInt(individuals.size());
-        Random random = new Random();
-        if(random.nextDouble() >= parametersService.getPx())
-            return individuals.get(index1).getChromosome();
-        int index2 = r.nextInt(individuals.size());
-        while(index1 == index2){
-            index2 = r.nextInt(individuals.size());
-        }
-        List<Integer> chromosome1 = individuals.get(index1).getChromosome();
-        List<Integer> chromosome2 = individuals.get(index2).getChromosome();
+        if(r.nextDouble() >= parametersService.getPx())
+            return chromosome1;
         int cutpointLeft = r.nextInt(chromosome1.size()-1);
         int cutpointRight = r.nextInt(chromosome1.size());
         while(cutpointLeft >= cutpointRight){

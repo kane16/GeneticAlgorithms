@@ -9,48 +9,42 @@ import java.util.*;
 @Service
 public class RouletteSelectionService extends GeneticAlgorithmService{
 
-    private double rouletteSum;
-
     @Autowired
     ParametersService parametersService;
 
     @Autowired
     OptimizationService optimizationService;
 
-    public void setRouletteMap(List<Individual> orderedPopulation){
+    public List<Individual> setRouletteMap(List<Individual> orderedPopulation){
         final double sum = orderedPopulation.stream().mapToDouble(Individual::getFitness).sum();
         orderedPopulation.forEach(individual ->
                 individual.setFitnessNormalized(getNormalizedFitness(individual, sum)));
-        double normalizedSum = 0;
-        for(Individual individual: orderedPopulation){
-            normalizedSum += individual.getFitnessNormalized();
-            individual.setRouletteSum(normalizedSum);
-        }
-        this.rouletteSum = normalizedSum;
+        return orderedPopulation;
     }
 
     public double getNormalizedFitness(Individual individual, double fitnessSum){
         return Math.exp(50*individual.getFitness()/Math.abs(fitnessSum));
     }
 
-    public List<Individual> makeSelection(List<Individual> population){
-        List<Individual> individuals = new ArrayList<>();
-        List<Individual> tourPopulation = new ArrayList<>();
-        Random random = new Random();
-        int selectionSize = parametersService.getTour();
-        while(tourPopulation.size() < selectionSize){
-            int rouletteRandom = random.nextInt(population.size());
-            if(!tourPopulation.contains(population.get(rouletteRandom)))
-                tourPopulation.add(population.get(rouletteRandom));
+    public List<Individual> prepareSelection(List<Individual> population){
+        return setRouletteMap(population);
+    }
+
+    public List<List<Integer>> makeSelection(List<Individual> individuals){
+        double normalizedSum = 0;
+        for(Individual individual: individuals){
+            normalizedSum += individual.getFitnessNormalized();
+            individual.setRouletteSum(normalizedSum);
         }
-        setRouletteMap(tourPopulation);
-        while(individuals.size() < selectionSize/2){
-            double rouletteRandom = Math.random()*rouletteSum;
-            tourPopulation.stream()
-                    .filter(individual -> !individuals.contains(individual) && individual.getRouletteSum() >= rouletteRandom)
-                    .findFirst().ifPresent(individuals::add);
-        }
-        return individuals;
+        double rouletteRandom = Math.random()*normalizedSum;
+        List<List<Integer>> chromosomes = new ArrayList<>();
+        chromosomes.add(individuals.stream()
+                .filter(individual -> individual.getRouletteSum() >= rouletteRandom)
+                .findFirst().orElse(new Individual()).getChromosome());
+        chromosomes.add(individuals.stream()
+                .filter(individual -> individual.getRouletteSum() >= rouletteRandom)
+                .findFirst().orElse(new Individual()).getChromosome());
+        return chromosomes;
     }
 
 }

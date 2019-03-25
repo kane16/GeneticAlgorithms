@@ -8,7 +8,6 @@ import pl.guminski.ga.models.GA.dataInput.DataInputContainer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,11 +31,12 @@ abstract public class GeneticAlgorithmService {
         while(i < parametersService.getGenerationNumber()){
             i++;
             List<Individual> currentPopulation;
-            currentPopulation = makeSelection(initialPopulation);
+            currentPopulation = prepareSelection(initialPopulation);
             List<Individual> crossoverPopulation = new ArrayList<>();
             while(crossoverPopulation.size() < initialPopulation.size()*0.9){
                 Individual individual = new Individual();
-                individual.setChromosome(crossoverService.performPMXAndGetCrossedChromosomes(currentPopulation));
+                individual.setChromosome(crossoverService.performPMXAndGetCrossedChromosomes(
+                        makeSelection(currentPopulation)));
                 individual.setGeneration(i);
                 crossoverPopulation.add(individual);
             }
@@ -69,6 +69,8 @@ abstract public class GeneticAlgorithmService {
         return bestFittedGenerationIndividuals;
     }
 
-    public abstract List<Individual> makeSelection(List<Individual> initialPopulation);
+    public abstract List<Individual> prepareSelection(List<Individual> initialPopulation);
+
+    public abstract List<List<Integer>> makeSelection(List<Individual> preparedPopulation);
 
 }

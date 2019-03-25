@@ -144,7 +144,7 @@ public class GaApplicationTests {
         parametersService.setDataInputContainer(dataExtractionService.getDataInputContainerFromFile(
                 dataExtractionService.getDataInputFile("easy_0")));
         simulationService.populateModel();
-        rouletteSelectionService.makeSelection(simulationService.getPopulation());
+        rouletteSelectionService.prepareSelection(simulationService.getPopulation());
     }
 
     @Test
@@ -167,7 +167,7 @@ public class GaApplicationTests {
         parametersService.setDataInputContainer(dataExtractionService.getDataInputContainerFromFile(
                 dataExtractionService.getDataInputFile("easy_0")));
         simulationService.populateModel();
-        List<Individual> population = rouletteSelectionService.makeSelection(simulationService.getPopulation());
+        List<Individual> population = rouletteSelectionService.prepareSelection(simulationService.getPopulation());
         System.out.println(Arrays.toString(simulationService.getPopulation().stream().
                 map(Individual::getRouletteSum).toArray()));
     }
@@ -186,7 +186,7 @@ public class GaApplicationTests {
         parametersService.setDataInputContainer(dataExtractionService.getDataInputContainerFromFile(
                 dataExtractionService.getDataInputFile("easy_0")));
         simulationService.populateModel();
-        rankSelectionService.makeSelection(simulationService.getPopulation());
+        rankSelectionService.prepareSelection(simulationService.getPopulation());
     }
 
     @Test

@@ -49,12 +49,14 @@ public class PlotController {
         if(table.equals("All algorithms")){
             XYChart.Series<String, Double> rankSeries = new XYChart.Series<>();
             XYChart.Series<String, Double> rouletteSeries = new XYChart.Series<>();
+            XYChart.Series<String, Double> tourSeries = new XYChart.Series<>();
             rankSeries.setName("Rank");
             rouletteSeries.setName("Roulette");
+            tourSeries.setName("Tour");
 
             List<StatisticsIndividual> rankIndividuals = simulationService.rankAlgorithmBestIndividuals;
             List<StatisticsIndividual> rouletteIndividuals = simulationService.rouletteAlgorithmBestIndividuals;
-
+            List<StatisticsIndividual> tourIndividuals = simulationService.tournamentAlgorithmBestIndividuals;
 
             for(StatisticsIndividual individual: rankIndividuals){
                 rankSeries.getData().add(new XYChart.Data<>(Integer.toString(individual.getGeneration()), individual.getFitness()));
@@ -64,7 +66,11 @@ public class PlotController {
                 rouletteSeries.getData().add(new XYChart.Data<>(Integer.toString(individual.getGeneration()), individual.getFitness()));
             }
 
-            data.addAll(rankSeries, rouletteSeries);
+            for(StatisticsIndividual individual: tourIndividuals){
+                tourSeries.getData().add(new XYChart.Data<>(Integer.toString(individual.getGeneration()), individual.getFitness()));
+            }
+
+            data.addAll(tourSeries, rankSeries, rouletteSeries);
         }
 
         if(data.size() > 0){

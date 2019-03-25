@@ -41,6 +41,9 @@ public class MainController {
     @Autowired
     DataExtractionService dataExtractionService;
 
+    @Autowired
+    TournamentSelectionService tournamentSelectionService;
+
     @FXML
     private JFXButton runSimulationButton;
 
@@ -211,6 +214,21 @@ public class MainController {
                     threads.add(thread);
                     thread.start();
                 }
+                List<Individual> tournamentIndividuals = new ArrayList<>();
+                for(int i=0 ; i<10 ;i++){
+                    Task task = new Task() {
+                        @Override
+                        protected Object call() throws Exception {
+                            tournamentIndividuals.addAll(
+                                    tournamentSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation()));
+                            return null;
+                        }
+                    };
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    threads.add(thread);
+                    thread.start();
+                }
                 List<Individual> rouletteIndividuals = new ArrayList<>();
                 for(int i=0 ; i<10 ;i++){
                     Task task = new Task() {
@@ -261,6 +279,7 @@ public class MainController {
                             .count()*2.25, 100);
                 }
                 this.updateProgress(100,100);
+                simulationService.tournamentAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(tournamentIndividuals, false);
                 simulationService.rankAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rankIndividuals, false);
                 simulationService.rouletteAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rouletteIndividuals, false);
                 simulationService.randomBestIndividual = simulationService.getStatisticalIndividualFromList(randomIndividuals, true).get(0);
