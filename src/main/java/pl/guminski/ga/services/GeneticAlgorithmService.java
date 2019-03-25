@@ -30,25 +30,29 @@ abstract public class GeneticAlgorithmService {
         int i = 0;
 
         while(i < parametersService.getGenerationNumber()){
-            List<Individual> sortedPopulation = initialPopulation.stream()
-                    .sorted(Comparator.comparing(Individual::getFitness).reversed()).collect(Collectors.toList());
             i++;
             List<Individual> currentPopulation;
             currentPopulation = makeSelection(initialPopulation);
             List<Individual> crossoverPopulation = new ArrayList<>();
             Random random = new Random();
-            while(crossoverPopulation.size() < initialPopulation.size()){
-                if(random.nextDouble() < parametersService.getPm()){
+            while(crossoverPopulation.size() < initialPopulation.size()*0.9){
+                if(random.nextDouble() < parametersService.getPx()){
                     Individual individual = new Individual();
                     individual.setChromosome(crossoverService.performPMXAndGetCrossedChromosomes(currentPopulation));
                     individual.setGeneration(i);
                     crossoverPopulation.add(individual);
                 }else{
                     Individual individual = new Individual();
-                    individual.setChromosome(initialPopulation.get(crossoverPopulation.size()).getChromosome());
+                    individual.setChromosome(crossoverService.getRandomChromosome(currentPopulation, crossoverPopulation));
                     individual.setGeneration(i);
                     crossoverPopulation.add(individual);
                 }
+            }
+            List<Individual> orderedPopulation =
+                    initialPopulation.stream().sorted(Comparator.comparing(Individual::getFitness).reversed())
+                            .collect(Collectors.toList());
+            for(int j=0 ; j<initialPopulation.size()*0.1;j++){
+                crossoverPopulation.add(orderedPopulation.get(i));
             }
             currentPopulation = crossoverPopulation;
             currentPopulation.forEach(individual ->

@@ -12,6 +12,16 @@ public class CrossoverService {
     @Autowired
     ParametersService parametersService;
 
+    public List<Integer> getRandomChromosome(List<Individual> individuals, List<Individual> crossoverIndividuals){
+        Random r = new Random();
+        int index1 = r.nextInt(individuals.size());
+        Individual individual = individuals.get(index1);
+        while(crossoverIndividuals.contains(individual)){
+            index1 = r.nextInt(individuals.size());
+        }
+        return individuals.get(index1).getChromosome();
+    }
+
     public List<Integer> performPMXAndGetCrossedChromosomes(List<Individual> individuals){
 
         Random r = new Random();

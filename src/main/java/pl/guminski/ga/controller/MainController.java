@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import pl.guminski.ga.models.Individual;
 import pl.guminski.ga.services.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -57,6 +58,9 @@ public class MainController {
 
     @FXML
     private JFXTextField PxField;
+
+    @FXML
+    private JFXTextField tourNumberField;
 
     Parent selectedWindow;
 
@@ -126,10 +130,40 @@ public class MainController {
 
             }
         });
+        PmField.textProperty().addListener(((observable, oldValue, newValue) ->
+        {
+            try{
+                parametersService.setPm(Double.parseDouble(newValue));
+            }catch (Exception exc){
+
+            }
+        }));
+        PxField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            try{
+                parametersService.setPx(Double.parseDouble(newValue));
+            }catch (Exception exc){
+
+            }
+        }));
+        numOfGenField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            try{
+                parametersService.setGenerationNumber(Integer.parseInt(newValue));
+            }catch (Exception exc){
+
+            }
+        }));
+        tourNumberField.textProperty().addListener(((observable, oldValue, newValue) -> {
+            try{
+                parametersService.setTour(Integer.parseInt(newValue));
+            }catch (Exception exc){
+
+            }
+        }));
         PmField.setText(String.valueOf(parametersService.getPm()));
         PxField.setText(String.valueOf(parametersService.getPx()));
         popSizeField.setText(String.valueOf(parametersService.getPop_size()));
-
+        numOfGenField.setText(String.valueOf(parametersService.getGenerationNumber()));
+        tourNumberField.setText(String.valueOf(parametersService.getTour()));
     }
 
     public void showPopulationScreen(){
@@ -138,6 +172,10 @@ public class MainController {
 
     public void showSimulationOutputScreen(){
         selectedWindow = routingService.openToolbarWindow("/views/ShowOutputWindow.fxml", mainPane, applicationContext);
+    }
+
+    public void showSimulationVisualisationOutputScreen(){
+        selectedWindow = routingService.openToolbarWindow("/views/Plots.fxml", mainPane, applicationContext);
     }
 
 
@@ -156,19 +194,36 @@ public class MainController {
                 this.updateProgress(5, 100);
                 simulationService.populateModel();
                 this.updateProgress(10, 100);
-                this.updateMessage("Processing rank algorithm ...");
-                List<Individual> rankAlgorithmBestIndividuals =
-                        rankSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation());
-                this.updateProgress(45, 100);
-                this.updateMessage("Processing roulette algorithm...");
-                List<Individual> rouletteAlgorithmBestIndividuals =
-                        rouletteSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation());
-                this.updateProgress(80, 100);
-                this.updateMessage("Processing random algorithm...");
-                Individual randomBestIndividual = randomSelectionService.generatePopulationAndFindBestFitness();
-                this.updateProgress(90, 100);
-                Individual greedyBestIndividual = greedySelectionService.getGreedyBestFitnessChromosome();
-                this.updateProgress(100, 100);
+                List<Individual> rankIndividuals = new ArrayList<>();
+                for(int i=0 ; i<10 ;i++){
+                    this.updateMessage("Processing rank: "+(i+1)+"/10");
+                    rankIndividuals.addAll(
+                            rankSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation()));
+                    this.updateProgress(10+(i+1)*3.5, 100);
+                }
+                simulationService.rankAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rankIndividuals, false);
+                List<Individual> rouletteIndividuals = new ArrayList<>();
+                for(int i=0 ; i<10 ;i++){
+                    this.updateMessage("Processing roulette: "+(i+1)+"/10");
+                    rouletteIndividuals.addAll(
+                            rouletteSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation()));
+                    this.updateProgress(45+(i+1)*3.5, 100);
+                }
+                simulationService.rouletteAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rouletteIndividuals, false);
+                List<Individual> randomIndividuals = new ArrayList<>();
+                for(int i=0 ; i<10 ;i++){
+                    this.updateMessage("Processing random: "+(i+1)+"/10");
+                    randomIndividuals.add(randomSelectionService.generatePopulationAndFindBestFitness());
+                    this.updateProgress(80+(i+1), 100);
+                }
+                simulationService.randomBestIndividual = simulationService.getStatisticalIndividualFromList(randomIndividuals, true).get(0);
+                List<Individual> greedyIndividuals = new ArrayList<>();
+                for(int i=0 ; i<10 ;i++){
+                    this.updateMessage("Processing greedy: "+(i+1)+"/10");
+                    greedyIndividuals.add(greedySelectionService.getGreedyBestFitnessChromosome());
+                    this.updateProgress(90+(i+1), 100);
+                }
+                simulationService.greedyBestIndividual = simulationService.getStatisticalIndividualFromList(greedyIndividuals, true).get(0);
                 return null;
             }
         };

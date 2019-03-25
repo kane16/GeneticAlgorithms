@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.guminski.ga.models.Individual;
 import pl.guminski.ga.models.treeModel.TreeChromosome;
+import pl.guminski.ga.models.treeModel.TreeOutputTable;
 
 import java.util.List;
 
@@ -25,6 +26,195 @@ public class PopulateTableService {
 
     @Autowired
     FormatService formatService;
+
+    @Autowired
+    ParametersService parametersService;
+
+    public void populateAllAlgorithmsTable(JFXTreeTableView treeTable, String table){
+        formatService.setDecimalFormat();
+        formatService.setIntegerFormat();
+        JFXTreeTableColumn<TreeOutputTable, String> generationValue = getGenerationValue();
+        JFXTreeTableColumn<TreeOutputTable, String> fitnessRankValue = getRankFitnessValue();
+        JFXTreeTableColumn<TreeOutputTable, String> rankStdDeviation = getRankStdDevValue();
+        JFXTreeTableColumn<TreeOutputTable, String> fitnessRouletteValue = getRouletteFitnessValue();
+        JFXTreeTableColumn<TreeOutputTable, String> rouletteStdDeviation = getRouletteRankStdDevValue();
+        JFXTreeTableColumn<TreeOutputTable, String> fitnessGreedyValue = getFitnessGreedyValue();
+        JFXTreeTableColumn<TreeOutputTable, String> greedyStdDevValue = getGreedyStdDevValue();
+        JFXTreeTableColumn<TreeOutputTable, String> randomFitnessValue = getRandomFitnessValue();
+        JFXTreeTableColumn<TreeOutputTable, String> randomStdDeviationValue = getRandomStdDeviationValue();
+
+        ObservableList<TreeOutputTable> chromosomes = FXCollections.observableArrayList();
+        for(int i=0; i<parametersService.getGenerationNumber();i++){
+            TreeOutputTable treeOutputTable = new TreeOutputTable();
+            treeOutputTable.generation = i+1;
+            treeOutputTable.rankFitness = simulationService.rankAlgorithmBestIndividuals.get(i).getFitness();
+            treeOutputTable.rankStdDeviation = simulationService.rankAlgorithmBestIndividuals.get(i).getStdDeviation();
+            treeOutputTable.rouletteFitness = simulationService.rouletteAlgorithmBestIndividuals.get(i).getFitness();
+            treeOutputTable.rouletteStdDeviation = simulationService.rouletteAlgorithmBestIndividuals.get(i).getStdDeviation();
+            treeOutputTable.greedyFitness = simulationService.greedyBestIndividual.getFitness();
+            treeOutputTable.greedyStdDeviation = simulationService.greedyBestIndividual.getStdDeviation();
+            treeOutputTable.randomFitness = simulationService.randomBestIndividual.getFitness();
+            treeOutputTable.randomStdDeviation = simulationService.randomBestIndividual.getStdDeviation();
+            chromosomes.add(treeOutputTable);
+        }
+
+
+        final TreeItem<TreeOutputTable> root =
+                new RecursiveTreeItem<>(chromosomes, RecursiveTreeObject::getChildren);
+
+        treeTable.getColumns().clear();
+        treeTable.setRoot(root);
+        if(table.equals("All algorithms")){
+            treeTable.getColumns().setAll(generationValue, fitnessRankValue, rankStdDeviation, fitnessRouletteValue,
+                    rouletteStdDeviation, fitnessGreedyValue, greedyStdDevValue, randomFitnessValue, randomStdDeviationValue);
+        }else if(table.equals("Rank")){
+            treeTable.getColumns().setAll(generationValue, fitnessRankValue, rankStdDeviation);
+        }else if(table.equals("Roulette")){
+            treeTable.getColumns().setAll(generationValue, fitnessRouletteValue, rouletteStdDeviation);
+        }else if(table.equals("Random")){
+            treeTable.getColumns().setAll(generationValue, randomFitnessValue, randomStdDeviationValue);
+        }else if(table.equals("Greedy")){
+            treeTable.getColumns().setAll(generationValue, fitnessGreedyValue, greedyStdDevValue);
+        }
+        treeTable.setShowRoot(false);
+        treeTable.setEditable(false);
+
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getRandomStdDeviationValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> randomStdDevValue = new JFXTreeTableColumn<>("Random std. dev.");
+        randomStdDevValue.setPrefWidth(100);
+        randomStdDevValue.setStyle("-fx-alignment: center;");
+        randomStdDevValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(randomStdDevValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().randomStdDeviation));
+            } else {
+                return randomStdDevValue.getComputedValue(param);
+            }
+        });
+        return randomStdDevValue;
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getRandomFitnessValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> randomFitnessValue = new JFXTreeTableColumn<>("Random fitness");
+        randomFitnessValue.setPrefWidth(100);
+        randomFitnessValue.setStyle("-fx-alignment: center;");
+        randomFitnessValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(randomFitnessValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().randomFitness));
+            } else {
+                return randomFitnessValue.getComputedValue(param);
+            }
+        });
+        return randomFitnessValue;
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getGreedyStdDevValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> greedyStdDevValue = new JFXTreeTableColumn<>("Greedy std. dev.");
+        greedyStdDevValue.setPrefWidth(100);
+        greedyStdDevValue.setStyle("-fx-alignment: center;");
+        greedyStdDevValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(greedyStdDevValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().greedyStdDeviation));
+            } else {
+                return greedyStdDevValue.getComputedValue(param);
+            }
+        });
+        return greedyStdDevValue;
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getFitnessGreedyValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> greedyFitnessValue = new JFXTreeTableColumn<>("Greedy fitness");
+        greedyFitnessValue.setPrefWidth(100);
+        greedyFitnessValue.setStyle("-fx-alignment: center;");
+        greedyFitnessValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(greedyFitnessValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().greedyFitness));
+            } else {
+                return greedyFitnessValue.getComputedValue(param);
+            }
+        });
+        return greedyFitnessValue;
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getRouletteFitnessValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> rouletteFitnessValue = new JFXTreeTableColumn<>("Roulette fitness");
+        rouletteFitnessValue.setPrefWidth(100);
+        rouletteFitnessValue.setStyle("-fx-alignment: center;");
+        rouletteFitnessValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(rouletteFitnessValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().rouletteFitness));
+            } else {
+                return rouletteFitnessValue.getComputedValue(param);
+            }
+        });
+        return rouletteFitnessValue;
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getRouletteRankStdDevValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> rankValue = new JFXTreeTableColumn<>("Roulette std. dev.");
+        rankValue.setPrefWidth(100);
+        rankValue.setStyle("-fx-alignment: center;");
+        rankValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(rankValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().rouletteStdDeviation));
+            } else {
+                return rankValue.getComputedValue(param);
+            }
+        });
+        return rankValue;
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getRankStdDevValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> rankValue = new JFXTreeTableColumn<>("Rank std. dev.");
+        rankValue.setPrefWidth(100);
+        rankValue.setStyle("-fx-alignment: center;");
+        rankValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(rankValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().rankStdDeviation));
+            } else {
+                return rankValue.getComputedValue(param);
+            }
+        });
+        return rankValue;
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getRankFitnessValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> rankValue = new JFXTreeTableColumn<>("Rank fitness");
+        rankValue.setPrefWidth(100);
+        rankValue.setStyle("-fx-alignment: center;");
+        rankValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(rankValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().rankFitness));
+            } else {
+                return rankValue.getComputedValue(param);
+            }
+        });
+        return rankValue;
+    }
+
+    private JFXTreeTableColumn<TreeOutputTable, String> getGenerationValue() {
+        JFXTreeTableColumn<TreeOutputTable, String> generationValue = new JFXTreeTableColumn<>("Generation");
+        generationValue.setPrefWidth(100);
+        generationValue.setStyle("-fx-alignment: center;");
+        generationValue.setCellValueFactory((TreeTableColumn.CellDataFeatures<TreeOutputTable, String> param) -> {
+            if(generationValue.validateValue(param)) {
+                return new SimpleStringProperty(formatService.integerFormat
+                        .format(param.getValue().getValue().generation));
+            } else {
+                return generationValue.getComputedValue(param);
+            }
+        });
+        return generationValue;
+    }
 
     public void populateTable(JFXTreeTableView treeTable, boolean isSimulationTable, List<Individual> individuals){
         formatService.setDecimalFormat();

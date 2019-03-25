@@ -36,9 +36,23 @@ public class OutputController {
 
     public void initialize() throws IOException {
         observableTableNames.addAll("All algorithms", "Rank", "Roulette", "Random", "Greedy");
-        populateTableService.populateTable(treeTable, true, new ArrayList<>());
+        populateTableService.populateAllAlgorithmsTable(treeTable, "All algorithms");
         tableNames.setItems(observableTableNames);
         tableNames.setValue("All algorithms");
+    }
+
+    public void onChosenTable(){
+        if(tableNames.getValue().equals("All algorithms")){
+            populateTableService.populateAllAlgorithmsTable(treeTable, "All algorithms");
+        }else if(tableNames.getValue().equals("Rank")){
+            populateTableService.populateAllAlgorithmsTable(treeTable, "Rank");
+        } else if (tableNames.getValue().equals("Roulette")) {
+            populateTableService.populateAllAlgorithmsTable(treeTable, "Roulette");
+        }else if(tableNames.getValue().equals("Random")){
+            populateTableService.populateAllAlgorithmsTable(treeTable, "Random");
+        }else if(tableNames.getValue().equals("Greedy")){
+            populateTableService.populateAllAlgorithmsTable(treeTable, "Greedy");
+        }
     }
 
 }

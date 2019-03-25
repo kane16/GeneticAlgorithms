@@ -21,13 +21,7 @@ public class RankSelectionService extends GeneticAlgorithmService{
                 .collect(Collectors.toList());
         int sum = 0;
         for(int i=0; i<population.size();i++){
-            if(i>0.9*population.size()){
-                sum += i*4;
-                population.get(i).setRank(i*4);
-            }else{
-                sum += i;
-                population.get(i).setRank(i);
-            }
+            sum += i;
         }
         double partialSum =0;
         for(int i=0; i<population.size();i++){
@@ -48,7 +42,6 @@ public class RankSelectionService extends GeneticAlgorithmService{
                 tourPopulation.add(initialPopulation.get(rouletteRandom));
         }
         double partialSum = makePreparationForSelectionWithRank(tourPopulation);
-        tourPopulation = sortIndividualsBySum(tourPopulation);
         while(individuals.size() < selectionSize/2){
             double rouletteRandom = Math.random()*partialSum;
             tourPopulation.stream()
@@ -56,11 +49,6 @@ public class RankSelectionService extends GeneticAlgorithmService{
                     .findFirst().ifPresent(individuals::add);
         }
         return individuals;
-    }
-
-    private List<Individual> sortIndividualsBySum(List<Individual> individuals) {
-        return individuals.stream().sorted(Comparator.comparing(Individual::getRank))
-                .collect(Collectors.toList());
     }
 
     public double getNormalizedFitness(Individual individual, double fitnessSum){
