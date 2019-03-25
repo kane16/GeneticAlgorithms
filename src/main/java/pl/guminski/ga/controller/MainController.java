@@ -4,6 +4,7 @@ package pl.guminski.ga.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -195,34 +196,76 @@ public class MainController {
                 simulationService.populateModel();
                 this.updateProgress(10, 100);
                 List<Individual> rankIndividuals = new ArrayList<>();
+                List<Thread> threads = new ArrayList<>();
+                this.updateMessage("Processing");
                 for(int i=0 ; i<10 ;i++){
-                    this.updateMessage("Processing rank: "+(i+1)+"/10");
-                    rankIndividuals.addAll(
-                            rankSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation()));
-                    this.updateProgress(10+(i+1)*3.5, 100);
+                    this.updateMessage("Processing rank: ");
+                    Task task = new Task() {
+                        @Override
+                        protected Object call() throws Exception {
+                            rankIndividuals.addAll(
+                                    rankSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation()));
+                            this.updateProgress(this.getProgress()+3.5, 100);
+                            return null;
+                        }
+                    };
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    threads.add(thread);
+                    thread.start();
                 }
-                simulationService.rankAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rankIndividuals, false);
                 List<Individual> rouletteIndividuals = new ArrayList<>();
                 for(int i=0 ; i<10 ;i++){
-                    this.updateMessage("Processing roulette: "+(i+1)+"/10");
-                    rouletteIndividuals.addAll(
-                            rouletteSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation()));
-                    this.updateProgress(45+(i+1)*3.5, 100);
+                    Task task = new Task() {
+                        @Override
+                        protected Object call() throws Exception {
+                            rouletteIndividuals.addAll(
+                                    rouletteSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation()));
+                            this.updateProgress(this.getProgress()+3.5, 100);
+                            return null;
+                        }
+                    };
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    threads.add(thread);
+                    thread.start();
                 }
-                simulationService.rouletteAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rouletteIndividuals, false);
                 List<Individual> randomIndividuals = new ArrayList<>();
                 for(int i=0 ; i<10 ;i++){
-                    this.updateMessage("Processing random: "+(i+1)+"/10");
-                    randomIndividuals.add(randomSelectionService.generatePopulationAndFindBestFitness());
-                    this.updateProgress(80+(i+1), 100);
+                    Task task = new Task() {
+                        @Override
+                        protected Object call() throws Exception {
+                            randomIndividuals.add(randomSelectionService.generatePopulationAndFindBestFitness());
+                            this.updateProgress(this.getProgress()+1, 100);
+                            return null;
+                        }
+                    };
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    threads.add(thread);
+                    thread.start();
                 }
-                simulationService.randomBestIndividual = simulationService.getStatisticalIndividualFromList(randomIndividuals, true).get(0);
                 List<Individual> greedyIndividuals = new ArrayList<>();
                 for(int i=0 ; i<10 ;i++){
-                    this.updateMessage("Processing greedy: "+(i+1)+"/10");
-                    greedyIndividuals.add(greedySelectionService.getGreedyBestFitnessChromosome());
-                    this.updateProgress(90+(i+1), 100);
+                    Task task = new Task() {
+                        @Override
+                        protected Object call() throws Exception {
+                            greedyIndividuals.add(greedySelectionService.getGreedyBestFitnessChromosome());
+                            this.updateProgress(this.getProgress()+1, 100);
+                            return null;
+                        }
+                    };
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    threads.add(thread);
+                    thread.start();
                 }
+                while(threads.stream().anyMatch(Thread::isAlive)){
+
+                }
+                simulationService.rankAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rankIndividuals, false);
+                simulationService.rouletteAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rouletteIndividuals, false);
+                simulationService.randomBestIndividual = simulationService.getStatisticalIndividualFromList(randomIndividuals, true).get(0);
                 simulationService.greedyBestIndividual = simulationService.getStatisticalIndividualFromList(greedyIndividuals, true).get(0);
                 return null;
             }

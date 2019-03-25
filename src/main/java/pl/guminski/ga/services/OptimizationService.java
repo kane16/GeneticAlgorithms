@@ -30,6 +30,7 @@ public class OptimizationService {
 
     public long getTotalProfitFromChromosome(DataInputContainer dataInputContainer, List<Integer> chromosome) {
         final ThiefData thiefData = (ThiefData) dataInputContainer.getThiefData();
+        thiefData.setKnapsackLoad(0);
         List<NodeCoord> cities = chromosome.stream()
                 .map(gen -> dataInputContainer.getNodeCoordList().get(gen-1))
                 .collect(Collectors.toList());
