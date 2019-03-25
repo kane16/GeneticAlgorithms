@@ -7,12 +7,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import pl.guminski.ga.services.ParametersService;
-import pl.guminski.ga.services.PopulateTableService;
-import pl.guminski.ga.services.SimulationService;
+import pl.guminski.ga.services.geneticAlgorithm.ParametersService;
+import pl.guminski.ga.services.geneticAlgorithm.PopulateTableService;
+import pl.guminski.ga.services.geneticAlgorithm.SimulationService;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 @Controller
 public class OutputController {

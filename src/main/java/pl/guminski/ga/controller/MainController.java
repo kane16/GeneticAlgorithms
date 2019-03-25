@@ -4,7 +4,6 @@ package pl.guminski.ga.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -18,8 +17,8 @@ import javafx.scene.layout.BorderPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import pl.guminski.ga.models.Individual;
-import pl.guminski.ga.services.*;
+import pl.guminski.ga.models.GA.Individual;
+import pl.guminski.ga.services.geneticAlgorithm.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -199,13 +198,11 @@ public class MainController {
                 List<Thread> threads = new ArrayList<>();
                 this.updateMessage("Processing");
                 for(int i=0 ; i<10 ;i++){
-                    this.updateMessage("Processing rank: ");
                     Task task = new Task() {
                         @Override
                         protected Object call() throws Exception {
                             rankIndividuals.addAll(
                                     rankSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation()));
-                            this.updateProgress(this.getProgress()+3.5, 100);
                             return null;
                         }
                     };
@@ -221,7 +218,6 @@ public class MainController {
                         protected Object call() throws Exception {
                             rouletteIndividuals.addAll(
                                     rouletteSelectionService.runAlgorithmAndFindBestSolutionInGeneration(simulationService.getPopulation()));
-                            this.updateProgress(this.getProgress()+3.5, 100);
                             return null;
                         }
                     };
@@ -261,8 +257,10 @@ public class MainController {
                     thread.start();
                 }
                 while(threads.stream().anyMatch(Thread::isAlive)){
-
+                    this.updateProgress(10+threads.stream().filter(thread -> !thread.isAlive())
+                            .count()*2.25, 100);
                 }
+                this.updateProgress(100,100);
                 simulationService.rankAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rankIndividuals, false);
                 simulationService.rouletteAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rouletteIndividuals, false);
                 simulationService.randomBestIndividual = simulationService.getStatisticalIndividualFromList(randomIndividuals, true).get(0);

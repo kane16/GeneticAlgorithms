@@ -11,8 +11,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import pl.guminski.ga.models.StatisticsIndividual;
-import pl.guminski.ga.services.SimulationService;
+import pl.guminski.ga.models.GA.StatisticsIndividual;
+import pl.guminski.ga.services.geneticAlgorithm.SimulationService;
 
 import java.util.List;
 

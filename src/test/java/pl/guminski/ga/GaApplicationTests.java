@@ -5,10 +5,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.guminski.ga.models.Individual;
-import pl.guminski.ga.models.dataInput.DataInputContainer;
-import pl.guminski.ga.models.dataInput.NodeCoord;
-import pl.guminski.ga.services.*;
+import pl.guminski.ga.models.GA.Individual;
+import pl.guminski.ga.models.GA.dataInput.DataInputContainer;
+import pl.guminski.ga.models.GA.dataInput.NodeCoord;
+import pl.guminski.ga.services.geneticAlgorithm.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static pl.guminski.ga.services.ChromosomeGenerationService.getRandomChromosomeStringRepresentation;
+import static pl.guminski.ga.services.geneticAlgorithm.ChromosomeGenerationService.getRandomChromosomeStringRepresentation;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
