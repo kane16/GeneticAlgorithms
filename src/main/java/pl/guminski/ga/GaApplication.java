@@ -20,7 +20,7 @@ public class GaApplication extends Application {
     @Override
     public void init() throws Exception {
         context = SpringApplication.run(GaApplication.class, getParameters().getRaw().toArray(new String[0]));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainToolbar.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ChooseSimulation.fxml"));
         loader.setControllerFactory(context::getBean);
         rootNode = loader.load();
     }
@@ -38,7 +38,7 @@ public class GaApplication extends Application {
         primaryStage.setX((primScreenBounds.getWidth() - 1280) / 2);
         primaryStage.setY((primScreenBounds.getHeight() - 768) / 2);
         primaryStage.setResizable(true);
-        primaryStage.setTitle("Travelling Thief simulation");
+        primaryStage.setTitle("Simulation choice");
         primaryStage.setScene(window);
         primaryStage.show();
     }

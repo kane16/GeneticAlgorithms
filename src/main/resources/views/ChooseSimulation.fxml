@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.guminski.ga.controller.MainController">
+   <children>
+      <JFXButton fx:id="GASimulationButton" onAction="#onGAChosen" layoutX="478.0" layoutY="292.0" prefHeight="32.0" prefWidth="256.0" style="-fx-border-color: black;" text="Genetic algorithms Simulation" />
+      <JFXButton fx:id="CSPSimulationButton" onAction="#onCSPChosen" layoutX="478.0" layoutY="342.0" prefHeight="32.0" prefWidth="256.0" style="-fx-border-color: black;" text="Constraint Satisfaction Problem Simulation" />
+      <Label layoutX="532.0" layoutY="221.0" text="Choose Simulation">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

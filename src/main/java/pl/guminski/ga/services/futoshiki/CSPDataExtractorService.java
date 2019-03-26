@@ -2,16 +2,15 @@ package pl.guminski.ga.services.futoshiki;
 
 import org.springframework.stereotype.Service;
 import pl.guminski.ga.models.futoshiki.FutoshikiItem;
+import pl.guminski.ga.services.geneticAlgorithm.DataExtractionService;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
-public class FutoshikiDataExtractor {
+public class CSPDataExtractorService {
 
     public FutoshikiItem getFutoshikiItemFromFile(File file) throws FileNotFoundException {
         FutoshikiItem futoshikiItem = new FutoshikiItem();
@@ -40,7 +39,7 @@ public class FutoshikiDataExtractor {
     public File getDataInputFile(String filename){
         File file = null;
         try{
-            file = new File(Objects.requireNonNull(FutoshikiDataExtractor.class.getClassLoader()
+            file = new File(Objects.requireNonNull(CSPDataExtractorService.class.getClassLoader()
                     .getResource("cspData/" + filename + ".txt"))
                     .getFile());
             file = new File(file.getAbsolutePath().replace("%20", " "));
@@ -48,6 +47,22 @@ public class FutoshikiDataExtractor {
             System.out.println("Nie znaleziono pliku");
         }
         return file;
+    }
+
+    public List<String> getAllFilesOfGameFromInputDataFolder(String gameName){
+        File file = null;
+        try{
+            file = new File(Objects.requireNonNull(DataExtractionService.class.getClassLoader()
+                    .getResource("cspData"))
+                    .getFile());
+            file = new File(file.getAbsolutePath().replace("%20", " "));
+        }catch (NullPointerException exc){
+            System.out.println("Nie znaleziono folderu");
+        }
+        return Arrays.stream(file.listFiles())
+                .filter(scenario -> scenario.getName().contains(gameName))
+                .map(scenario -> scenario.getName().replace(".txt", ""))
+                .collect(Collectors.toList());
     }
 
 }

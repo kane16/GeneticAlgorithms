@@ -33,7 +33,7 @@ abstract public class GeneticAlgorithmService {
             List<Individual> currentPopulation;
             currentPopulation = prepareSelection(initialPopulation);
             List<Individual> crossoverPopulation = new ArrayList<>();
-            while(crossoverPopulation.size() < initialPopulation.size()*0.9){
+            while(crossoverPopulation.size() < initialPopulation.size()){
                 Individual individual = new Individual();
                 individual.setChromosome(crossoverService.performPMXAndGetCrossedChromosomes(
                         makeSelection(currentPopulation)));
@@ -43,9 +43,6 @@ abstract public class GeneticAlgorithmService {
             List<Individual> orderedPopulation =
                     initialPopulation.stream().sorted(Comparator.comparing(Individual::getFitness).reversed())
                             .collect(Collectors.toList());
-            for(int j=0 ; j<initialPopulation.size()*0.1;j++){
-                crossoverPopulation.add(orderedPopulation.get(i));
-            }
             currentPopulation = crossoverPopulation;
             currentPopulation.forEach(individual ->
                     {

@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.guminski.ga.services.futoshiki.FutoshikiDataExtractor;
+import pl.guminski.ga.services.futoshiki.CSPDataExtractorService;
 
 import java.io.FileNotFoundException;
 
@@ -14,12 +14,12 @@ import java.io.FileNotFoundException;
 public class FutoshikiApplicationTests {
 
     @Autowired
-    FutoshikiDataExtractor futoshikiDataExtractor;
+    CSPDataExtractorService CSPDataExtractorService;
 
     @Test
     public void testFutoshikiDataExtraction() throws FileNotFoundException {
-        futoshikiDataExtractor.getFutoshikiItemFromFile(
-                futoshikiDataExtractor.getDataInputFile("futoshiki_4_0"));
+        CSPDataExtractorService.getFutoshikiItemFromFile(
+                CSPDataExtractorService.getDataInputFile("futoshiki_4_0"));
     }
 
 }
