@@ -11,15 +11,22 @@ import java.io.FileNotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FutoshikiApplicationTests {
+public class GameApplicationTests {
 
     @Autowired
-    CSPDataExtractorService CSPDataExtractorService;
+    CSPDataExtractorService cspDataExtractorService;
 
     @Test
     public void testFutoshikiDataExtraction() throws FileNotFoundException {
-        CSPDataExtractorService.getFutoshikiItemFromFile(
-                CSPDataExtractorService.getDataInputFile("futoshiki_4_0"));
+        cspDataExtractorService.getFutoshikiItemFromFile(
+                cspDataExtractorService.getDataInputFile("futoshiki_4_0"));
+    }
+
+    @Test
+    public void testSkyscraperDataExtraction() throws FileNotFoundException {
+        cspDataExtractorService.getScascraperItemFromFile(
+                cspDataExtractorService.getDataInputFile("skyscrapper_4_0")
+        );
     }
 
 }

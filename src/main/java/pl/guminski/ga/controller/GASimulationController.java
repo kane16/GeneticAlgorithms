@@ -250,7 +250,6 @@ public class GASimulationController {
                         @Override
                         protected Object call() throws Exception {
                             randomIndividuals.add(randomSelectionService.generatePopulationAndFindBestFitness());
-                            this.updateProgress(this.getProgress()+1, 100);
                             return null;
                         }
                     };
@@ -265,7 +264,6 @@ public class GASimulationController {
                         @Override
                         protected Object call() throws Exception {
                             greedyIndividuals.add(greedySelectionService.getGreedyBestFitnessChromosome());
-                            this.updateProgress(this.getProgress()+1, 100);
                             return null;
                         }
                     };
