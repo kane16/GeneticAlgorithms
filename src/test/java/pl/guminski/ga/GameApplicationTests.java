@@ -18,15 +18,12 @@ public class GameApplicationTests {
 
     @Test
     public void testFutoshikiDataExtraction() throws FileNotFoundException {
-        cspDataExtractorService.getFutoshikiItemFromFile(
-                cspDataExtractorService.getDataInputFile("futoshiki_4_0"));
+        cspDataExtractorService.getFutoshikiItemFromFile("futoshiki_4_0");
     }
 
     @Test
     public void testSkyscraperDataExtraction() throws FileNotFoundException {
-        cspDataExtractorService.getScascraperItemFromFile(
-                cspDataExtractorService.getDataInputFile("skyscrapper_4_0")
-        );
+        cspDataExtractorService.getScascraperItemFromFile("skyscrapper_4_0");
     }
 
 }

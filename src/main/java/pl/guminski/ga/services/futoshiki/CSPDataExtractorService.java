@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @Service
 public class CSPDataExtractorService {
 
-    public SkyscraperItem getScascraperItemFromFile(File file) throws FileNotFoundException {
+    public SkyscraperItem getScascraperItemFromFile(String filename) throws FileNotFoundException {
         SkyscraperItem skyscraperItem = new SkyscraperItem();
-        Scanner sc = new Scanner(file);
+        Scanner sc = new Scanner(getDataInputFile(filename));
         skyscraperItem.size = sc.nextInt();
         sc.nextLine();
         for(int i=0;i<4;i++){
@@ -42,9 +42,9 @@ public class CSPDataExtractorService {
         return skyscraperItem;
     }
 
-    public FutoshikiItem getFutoshikiItemFromFile(File file) throws FileNotFoundException {
+    public FutoshikiItem getFutoshikiItemFromFile(String filename) throws FileNotFoundException {
         FutoshikiItem futoshikiItem = new FutoshikiItem();
-        Scanner sc = new Scanner(file);
+        Scanner sc = new Scanner(getDataInputFile(filename));
         futoshikiItem.maxNumber = sc.nextInt();
         sc.nextLine();
         sc.nextLine();
