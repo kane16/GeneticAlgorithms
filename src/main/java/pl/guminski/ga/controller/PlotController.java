@@ -1,5 +1,6 @@
 package pl.guminski.ga.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.guminski.ga.models.GA.StatisticsIndividual;
+import pl.guminski.ga.services.geneticAlgorithm.ExcelExportService;
 import pl.guminski.ga.services.geneticAlgorithm.SimulationService;
 
 import java.util.List;
@@ -24,12 +26,18 @@ public class PlotController {
     JFXComboBox tableNameChoice;
 
     @FXML
+    JFXButton exportCalculationsData;
+
+    @FXML
     AnchorPane plotPane;
 
     ObservableList<String> tableNames = FXCollections.observableArrayList();
 
     @Autowired
     SimulationService simulationService;
+
+    @Autowired
+    ExcelExportService excelExportService;
 
 
     public void initialize(){
@@ -42,6 +50,11 @@ public class PlotController {
         if (tableNameChoice.getValue().equals("All algorithms")) {
             setChart("All algorithms");
         }
+    }
+
+    public void onExportToFolder(){
+        excelExportService.chooseDirectory(exportCalculationsData.getScene().getWindow());
+        excelExportService.exportToExcel();
     }
 
     public BarChart getChart(String table) {

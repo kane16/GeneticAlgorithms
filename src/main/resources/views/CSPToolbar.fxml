@@ -16,9 +16,9 @@
                </font>
             </JFXButton>
             <JFXComboBox fx:id="gameNameCombo" layoutX="31.0" layoutY="28.0" onAction="#onGameChosen" prefHeight="25.0" prefWidth="128.0" promptText="Choose Game" />
-            <JFXComboBox fx:id="scenarioNameCombo" layoutX="31.0" layoutY="81.0" prefHeight="25.0" prefWidth="128.0" promptText="Choose simulation" />
+            <JFXComboBox fx:id="scenarioNameCombo" onAction="#onScenarioChosen" layoutX="31.0" layoutY="81.0" prefHeight="25.0" prefWidth="128.0" promptText="Choose simulation" />
          </children>
       </AnchorPane>
-      <StackPane fx:id="rectangle" layoutX="418.0" layoutY="84.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #c5cfe0;" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="418.0" AnchorPane.rightAnchor="262.0" AnchorPane.topAnchor="84.0" />
+      <AnchorPane fx:id="rectangle" layoutX="418.0" layoutY="84.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #c5cfe0;" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="418.0" AnchorPane.rightAnchor="262.0" AnchorPane.topAnchor="84.0" />
    </children>
 </AnchorPane>

@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class Tile extends StackPane {
@@ -15,7 +16,8 @@ public class Tile extends StackPane {
         border.setFill(null);
         border.setStroke(Color.BLACK);
         setAlignment(Pos.CENTER);
-        getChildren().addAll(border);
+        text.setFont(Font.font(32));
+        getChildren().addAll(border, text);
     }
 
     public void drawNumber(String number){

@@ -46,19 +46,19 @@ public class PopulateTableService {
         JFXTreeTableColumn<TreeOutputTable, String> randomStdDeviationValue = getRandomStdDeviationValue();
 
         ObservableList<TreeOutputTable> chromosomes = FXCollections.observableArrayList();
-        for(int i=0; i<parametersService.getGenerationNumber();i++){
+        for(int i=0; i<parametersService.getGenerationNumber()+1;i++){
             TreeOutputTable treeOutputTable = new TreeOutputTable();
-            treeOutputTable.generation = i+1;
+            treeOutputTable.generation = simulationService.tournamentAlgorithmBestIndividuals.get(i).getGeneration();
             treeOutputTable.tourFitness = simulationService.tournamentAlgorithmBestIndividuals.get(i).getFitness();
             treeOutputTable.tourStdDeviation = simulationService.tournamentAlgorithmBestIndividuals.get(i).getStdDeviation();
             treeOutputTable.rankFitness = simulationService.rankAlgorithmBestIndividuals.get(i).getFitness();
             treeOutputTable.rankStdDeviation = simulationService.rankAlgorithmBestIndividuals.get(i).getStdDeviation();
             treeOutputTable.rouletteFitness = simulationService.rouletteAlgorithmBestIndividuals.get(i).getFitness();
             treeOutputTable.rouletteStdDeviation = simulationService.rouletteAlgorithmBestIndividuals.get(i).getStdDeviation();
-            treeOutputTable.greedyFitness = simulationService.greedyBestIndividual.getFitness();
-            treeOutputTable.greedyStdDeviation = simulationService.greedyBestIndividual.getStdDeviation();
-            treeOutputTable.randomFitness = simulationService.randomBestIndividual.getFitness();
-            treeOutputTable.randomStdDeviation = simulationService.randomBestIndividual.getStdDeviation();
+            treeOutputTable.greedyFitness = simulationService.greedyBestIndividual.get(i).getFitness();
+            treeOutputTable.greedyStdDeviation = simulationService.greedyBestIndividual.get(i).getStdDeviation();
+            treeOutputTable.randomFitness = simulationService.randomBestIndividual.get(i).getFitness();
+            treeOutputTable.randomStdDeviation = simulationService.randomBestIndividual.get(i).getStdDeviation();
             chromosomes.add(treeOutputTable);
         }
 

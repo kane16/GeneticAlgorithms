@@ -280,8 +280,8 @@ public class GASimulationController {
                 simulationService.tournamentAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(tournamentIndividuals, false);
                 simulationService.rankAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rankIndividuals, false);
                 simulationService.rouletteAlgorithmBestIndividuals = simulationService.getStatisticalIndividualFromList(rouletteIndividuals, false);
-                simulationService.randomBestIndividual = simulationService.getStatisticalIndividualFromList(randomIndividuals, true).get(0);
-                simulationService.greedyBestIndividual = simulationService.getStatisticalIndividualFromList(greedyIndividuals, true).get(0);
+                simulationService.randomBestIndividual = simulationService.getStatisticalIndividualFromList(randomIndividuals, true);
+                simulationService.greedyBestIndividual = simulationService.getStatisticalIndividualFromList(greedyIndividuals, true);
                 return null;
             }
         };

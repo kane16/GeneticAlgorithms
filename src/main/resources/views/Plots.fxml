@@ -3,9 +3,16 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.guminski.ga.controller.PlotController">
     <children>
         <AnchorPane fx:id="plotPane" layoutX="68.0" layoutY="63.0" prefHeight="659.0" prefWidth="889.0" AnchorPane.bottomAnchor="46.0" AnchorPane.rightAnchor="67.0" />
       <JFXComboBox layoutX="68.0" fx:id="tableNameChoice" onAction="#onChosenTable" layoutY="14.0" prefHeight="25.0" prefWidth="132.0" promptText="Table name" />
+        <JFXButton fx:id="exportCalculationsData" onAction="#onExportToFolder" layoutX="847.0" layoutY="721.0" prefHeight="33.0" prefWidth="167.0" style="-fx-border-color: black;" text="Export do arkusza" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="10.0">
+            <font>
+                <Font name="Lucida Sans Regular" size="14.0" />
+            </font>
+        </JFXButton>
     </children>
 </AnchorPane>
