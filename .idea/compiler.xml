@@ -12,7 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="GASpring" target="10" />
-      <module name="Genetic Algothms" target="9" />
+      <module name="Genetic Algothms" target="10" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
