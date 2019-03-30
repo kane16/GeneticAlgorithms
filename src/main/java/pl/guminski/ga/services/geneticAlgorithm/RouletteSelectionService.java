@@ -30,19 +30,37 @@ public class RouletteSelectionService extends GeneticAlgorithmService{
         return setRouletteMap(population);
     }
 
+    public List<Individual> makeSelectionForTour(List<Individual> individuals, int toursize){
+        double normalizedSum = 0;
+        individuals = prepareSelection(individuals);
+        for(Individual individual: individuals){
+            normalizedSum += individual.getFitnessNormalized();
+            individual.setRouletteSum(normalizedSum);
+        }
+        List<Individual> chromosomes = new ArrayList<>();
+        while(chromosomes.size()<toursize){
+            double rouletteRandom1 = Math.random()*normalizedSum;
+            chromosomes.add(individuals.stream()
+                    .filter(individual -> individual.getRouletteSum() >= rouletteRandom1)
+                    .findFirst().orElse(new Individual()));
+        }
+        return chromosomes;
+    }
+
     public List<List<Integer>> makeSelection(List<Individual> individuals){
         double normalizedSum = 0;
         for(Individual individual: individuals){
             normalizedSum += individual.getFitnessNormalized();
             individual.setRouletteSum(normalizedSum);
         }
-        double rouletteRandom = Math.random()*normalizedSum;
+        double rouletteRandom1 = Math.random()*normalizedSum;
         List<List<Integer>> chromosomes = new ArrayList<>();
         chromosomes.add(individuals.stream()
-                .filter(individual -> individual.getRouletteSum() >= rouletteRandom)
+                .filter(individual -> individual.getRouletteSum() >= rouletteRandom1)
                 .findFirst().orElse(new Individual()).getChromosome());
+        double rouletteRandom2 = Math.random()*normalizedSum;
         chromosomes.add(individuals.stream()
-                .filter(individual -> individual.getRouletteSum() >= rouletteRandom)
+                .filter(individual -> individual.getRouletteSum() >= rouletteRandom2)
                 .findFirst().orElse(new Individual()).getChromosome());
         return chromosomes;
     }
