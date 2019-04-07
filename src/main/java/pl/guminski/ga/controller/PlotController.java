@@ -44,6 +44,8 @@ public class PlotController {
         tableNames.addAll("All algorithms", "Rank", "Roulette", "Random", "Greedy");
         tableNameChoice.setValue("All algorithms");
         tableNameChoice.setItems(tableNames);
+        setChart("All algorithms");
+        tableNameChoice.setVisible(false);
     }
 
     public void onChosenTable(){

@@ -47,28 +47,22 @@ public class ExcelExportService {
     }
 
     private void exportOutputToExcel(Sheet sheetOutput) {
-        int column = 1;
+        int row = 1;
 
         for(int i=0; i<simulationService.rankAlgorithmBestIndividuals.size();i++){
-            sheetOutput.getRow(0).getCell(column).setCellValue(i);
-            sheetOutput.getRow(1).getCell(column).setCellValue(simulationService.tournamentAlgorithmBestIndividuals.get(i).getFitness());
-            sheetOutput.getRow(2).getCell(column).setCellValue(simulationService.tournamentAlgorithmBestIndividuals.get(i).getStdDeviation());
-            sheetOutput.getRow(3).getCell(column).setCellValue(simulationService.rankAlgorithmBestIndividuals.get(i).getFitness());
-            sheetOutput.getRow(4).getCell(column).setCellValue(simulationService.rankAlgorithmBestIndividuals.get(i).getStdDeviation());
-            sheetOutput.getRow(5).getCell(column).setCellValue(simulationService.rouletteAlgorithmBestIndividuals.get(i).getFitness());
-            sheetOutput.getRow(6).getCell(column).setCellValue(simulationService.rouletteAlgorithmBestIndividuals.get(i).getStdDeviation());
-            sheetOutput.getRow(7).getCell(column).setCellValue(simulationService.greedyBestIndividual.get(i).getFitness());
-            sheetOutput.getRow(8).getCell(column).setCellValue(simulationService.greedyBestIndividual.get(i).getStdDeviation());
-            sheetOutput.getRow(9).getCell(column).setCellValue(simulationService.randomBestIndividual.get(i).getFitness());
-            sheetOutput.getRow(10).getCell(column).setCellValue(simulationService.randomBestIndividual.get(i).getStdDeviation());
-            sheetOutput.getRow(11).getCell(column).setCellValue(simulationService.randomBestIndividual.get(i).getStdDeviation());
-            sheetOutput.getRow(10).getCell(column).setCellValue(simulationService.randomBestIndividual.get(i).getStdDeviation());
-            sheetOutput.getRow(11).getCell(column).setCellValue(simulationService.tournamentAlgorithmBestIndividuals.get(i).getFitness()
-                    -simulationService.tournamentAlgorithmBestIndividuals.get(i).getStdDeviation());
-            sheetOutput.getRow(12).getCell(column).setCellValue(simulationService.tournamentAlgorithmBestIndividuals.get(i).getFitness()
-                    +simulationService.tournamentAlgorithmBestIndividuals.get(i).getStdDeviation());
+            sheetOutput.getRow(row).getCell(0).setCellValue(i);
+            sheetOutput.getRow(row).getCell(1).setCellValue(simulationService.tournamentAlgorithmBestIndividuals.get(i).getFitness());
+            sheetOutput.getRow(row).getCell(2).setCellValue(simulationService.tournamentAlgorithmBestIndividuals.get(i).getStdDeviation());
+            sheetOutput.getRow(row).getCell(3).setCellValue(simulationService.rankAlgorithmBestIndividuals.get(i).getFitness());
+            sheetOutput.getRow(row).getCell(4).setCellValue(simulationService.rankAlgorithmBestIndividuals.get(i).getStdDeviation());
+            sheetOutput.getRow(row).getCell(5).setCellValue(simulationService.rouletteAlgorithmBestIndividuals.get(i).getFitness());
+            sheetOutput.getRow(row).getCell(6).setCellValue(simulationService.rouletteAlgorithmBestIndividuals.get(i).getStdDeviation());
+            sheetOutput.getRow(row).getCell(7).setCellValue(simulationService.greedyBestIndividual.get(i).getFitness());
+            sheetOutput.getRow(row).getCell(8).setCellValue(simulationService.greedyBestIndividual.get(i).getStdDeviation());
+            sheetOutput.getRow(row).getCell(9).setCellValue(simulationService.randomBestIndividual.get(i).getFitness());
+            sheetOutput.getRow(row).getCell(10).setCellValue(simulationService.randomBestIndividual.get(i).getStdDeviation());
 
-            column++;
+            row++;
         }
     }
 
