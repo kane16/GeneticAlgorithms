@@ -1,4 +1,4 @@
-package pl.guminski.ga.services.futoshiki;
+package pl.guminski.ga.services.csp;
 
 import org.springframework.stereotype.Service;
 import pl.guminski.ga.models.games.FutoshikiItem;
@@ -39,6 +39,7 @@ public class CSPDataExtractorService {
                     break;
             }
         }
+        skyscraperItem.board = new int[skyscraperItem.size][skyscraperItem.size];
         return skyscraperItem;
     }
 
@@ -48,26 +49,31 @@ public class CSPDataExtractorService {
         futoshikiItem.maxNumber = sc.nextInt();
         sc.nextLine();
         sc.nextLine();
-        List<List<Integer>> futoshikiContent = new ArrayList<>(futoshikiItem.maxNumber);
+        int[][] futoshikiContent = new int[futoshikiItem.maxNumber][futoshikiItem.maxNumber];
         for(int i=0; i<futoshikiItem.maxNumber; i++){
-            List<Integer> futoshikiRow = new ArrayList<>(futoshikiItem.maxNumber);
+            int[] futoshikiRow = new int[futoshikiItem.maxNumber];
             String nextLine = sc.nextLine();
             String[] numbers = nextLine.split(";");
             for(int j=0 ; j<numbers.length; j++){
-                futoshikiRow.add(Integer.parseInt(numbers[j]));
+                futoshikiRow[j] = Integer.parseInt(numbers[j]);
             }
-            futoshikiContent.add(futoshikiRow);
+            futoshikiContent[i] = futoshikiRow;
         }
-        sc.nextLine();
         futoshikiItem.contentTable = futoshikiContent;
-        Map<Integer, String> constraints = new HashMap<>();
-        int i=0;
+        sc.nextLine();
+        ArrayList<String> constraints = new ArrayList<>();
         while(sc.hasNextLine()){
-            constraints.put(i, sc.nextLine());
-            i++;
+            String constraint = replaceLettersWithIndexes(sc.nextLine());
+            constraints.add(constraint);
         }
         futoshikiItem.constraints = constraints;
         return futoshikiItem;
+    }
+
+    private String replaceLettersWithIndexes(String constraint) {
+        return constraint.replace("A", "1").replace("B", "2")
+                .replace("C", "3").replace("D", "4").replace("E", "5")
+                .replace("F", "6");
     }
 
     public File getDataInputFile(String filename){

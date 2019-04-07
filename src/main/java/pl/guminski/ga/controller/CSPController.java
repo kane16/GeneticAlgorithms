@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import pl.guminski.ga.models.games.FutoshikiItem;
 import pl.guminski.ga.models.games.SkyscraperItem;
 import pl.guminski.ga.models.games.viewModels.Tile;
-import pl.guminski.ga.services.futoshiki.CSPDataExtractorService;
+import pl.guminski.ga.services.csp.CSPDataExtractorService;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,8 @@ public class CSPController {
     @Autowired
     CSPDataExtractorService cspDataExtractorService;
 
+
+
     public void initialize(){
         ObservableList<String> gameNames = FXCollections.observableArrayList();
         gameNames.addAll("futoshiki", "skyscrapper");
@@ -55,12 +57,17 @@ public class CSPController {
     public void onScenarioChosen() throws FileNotFoundException {
         switch (gameNameCombo.getValue()){
             case "futoshiki":
-                futoshikiItem = cspDataExtractorService.getFutoshikiItemFromFile(scenarioNameCombo.getValue());
-                createFutoshikiBoard();
+                if(scenarioNameCombo.getValue() != null){
+                    futoshikiItem = cspDataExtractorService.getFutoshikiItemFromFile(scenarioNameCombo.getValue());
+                    createFutoshikiBoard();
+                }
                 break;
             case "skyscrapper":
-                skyscraperItem = cspDataExtractorService.getScascraperItemFromFile(scenarioNameCombo.getValue());
-                createSkyscraperBoard();
+                if(scenarioNameCombo.getValue() != null)
+                {
+                    skyscraperItem = cspDataExtractorService.getScascraperItemFromFile(scenarioNameCombo.getValue());
+                    createSkyscraperBoard();
+                }
                 break;
         }
     }
@@ -112,7 +119,7 @@ public class CSPController {
                 (int) rectangle.getHeight() / futoshikiItem.maxNumber);
         tile.setTranslateX(j * (int) rectangle.getWidth() / futoshikiItem.maxNumber);
         tile.setTranslateY(i * (int) rectangle.getHeight() / futoshikiItem.maxNumber);
-        tile.drawNumber(futoshikiItem.contentTable.get(i).get(j).toString());
+        tile.drawNumber("" + futoshikiItem.contentTable[i][j]);
         rectangle.getChildren().add(tile);
         return tile;
     }

@@ -8,6 +8,7 @@ public class SkyscraperItem {
     public List<Integer> leftBound;
     public List<Integer> rightBound;
     public List<Integer> bottomBound;
+    public int[][] board;
     public Integer size;
 
 }
