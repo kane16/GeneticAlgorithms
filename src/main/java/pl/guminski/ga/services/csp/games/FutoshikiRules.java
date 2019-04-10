@@ -2,11 +2,16 @@ package pl.guminski.ga.services.csp.games;
 
 import java.util.List;
 
-public class Futoshiki {
+public class FutoshikiRules extends Rules {
 
+    public List<String> constraints;
 
+    public FutoshikiRules(List<String> constraints, int[][] board){
+        this.constraints = constraints;
+        this.board = board;
+    }
 
-    public boolean isConstraintsFulfilled(List<String> constraints, int[][] board, int value, int row, int column){
+    public boolean isConstraintsFulfilled(int value, int row, int column){
         for(int i=0 ; i<board.length ; i++){
             if(value == board[row][i]){
                 return false;

@@ -29,7 +29,7 @@ public class MainController {
 
     public void onCSPChosen(){
         routingService.openWindow("/views/CSPToolbar.fxml", 1280, 768, true, GASimulationButton,
-                applicationContext, "Constraint Satisfaction Problem");
+                applicationContext, "Rules Satisfaction Problem");
     }
 
 }

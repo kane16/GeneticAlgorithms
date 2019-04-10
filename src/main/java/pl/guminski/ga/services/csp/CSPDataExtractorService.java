@@ -1,8 +1,8 @@
 package pl.guminski.ga.services.csp;
 
 import org.springframework.stereotype.Service;
-import pl.guminski.ga.models.games.FutoshikiItem;
-import pl.guminski.ga.models.games.SkyscraperItem;
+import pl.guminski.ga.models.games.inputmodels.FutoshikiItem;
+import pl.guminski.ga.models.games.inputmodels.SkyscraperItem;
 import pl.guminski.ga.services.geneticAlgorithm.DataExtractionService;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package pl.guminski.ga.models.games;
+package pl.guminski.ga.models.games.inputmodels;
 
 import java.util.ArrayList;
 import java.util.List;

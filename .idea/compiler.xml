@@ -12,11 +12,13 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="GASpring" target="10" />
+      <module name="Genetic Algothms" target="10" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="GASpring" options="-parameters" />
+      <module name="Genetic Algothms" options="-parameters" />
     </option>
   </component>
 </project>

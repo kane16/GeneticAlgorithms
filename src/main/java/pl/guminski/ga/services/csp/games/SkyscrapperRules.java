@@ -3,10 +3,23 @@ package pl.guminski.ga.services.csp.games;
 import java.util.Arrays;
 import java.util.List;
 
-public class Skyscrapper {
+public class SkyscrapperRules extends Rules{
 
-    public boolean isConstraintsFulfilled(List<Integer> bottom, List<Integer> top, List<Integer> left,
-                                          List<Integer> right, int[][] board, int value, int row, int column){
+    public List<Integer> bottom;
+    public List<Integer> top;
+    public List<Integer> left;
+    public List<Integer> right;
+
+    public SkyscrapperRules(List<Integer> bottom, List<Integer> top, List<Integer> left,
+                            List<Integer> right, int[][] board){
+        this.bottom = bottom;
+        this.left = left;
+        this.top = top;
+        this.right = right;
+        this.board = board;
+    }
+
+    public boolean isConstraintsFulfilled(int value, int row, int column){
         int bottomConstraint = bottom.get(column);
         int topConstraint = top.get(column);
         int leftConstraint = left.get(row);
