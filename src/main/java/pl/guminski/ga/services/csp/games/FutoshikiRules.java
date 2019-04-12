@@ -1,5 +1,7 @@
 package pl.guminski.ga.services.csp.games;
 
+import pl.guminski.ga.models.games.Node;
+
 import java.util.List;
 
 public class FutoshikiRules extends Rules {
@@ -11,12 +13,12 @@ public class FutoshikiRules extends Rules {
         this.board = board;
     }
 
-    public boolean isConstraintsFulfilled(int value, int row, int column){
+    public boolean isConstraintsFulfilled(Node node){
         for(int i=0 ; i<board.length ; i++){
-            if(value == board[row][i]){
+            if(node.value == board[node.row][i]){
                 return false;
             }
-            if(value == board[i][column]){
+            if(node.value == board[i][node.column]){
                 return false;
             }
         }
@@ -24,7 +26,7 @@ public class FutoshikiRules extends Rules {
         for(int i=0; i<board.length; i++){
             newBoard[i] = board[i].clone();
         }
-        newBoard[row][column] = value;
+        newBoard[node.row][node.column] = node.value;
         if(constraints.stream().anyMatch(constraint -> !isConstraintFulfilled(constraint, newBoard))) {
             return false;
         }

@@ -1,5 +1,7 @@
 package pl.guminski.ga.services.csp.games;
 
+import pl.guminski.ga.models.games.Node;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,17 +21,17 @@ public class SkyscrapperRules extends Rules{
         this.board = board;
     }
 
-    public boolean isConstraintsFulfilled(int value, int row, int column){
-        int bottomConstraint = bottom.get(column);
-        int topConstraint = top.get(column);
-        int leftConstraint = left.get(row);
-        int rightConstraint = right.get(row);
+    public boolean isConstraintsFulfilled(Node node){
+        int bottomConstraint = bottom.get(node.column);
+        int topConstraint = top.get(node.column);
+        int leftConstraint = left.get(node.row);
+        int rightConstraint = right.get(node.row);
 
         for(int i=0 ; i<board.length ; i++){
-            if(value == board[row][i]){
+            if(node.value == board[node.row][i]){
                 return false;
             }
-            if(value == board[i][column]){
+            if(node.value == board[i][node.column]){
                 return false;
             }
         }
@@ -37,11 +39,11 @@ public class SkyscrapperRules extends Rules{
         for(int i=0; i<board.length; i++){
             newBoard[i] = board[i].clone();
         }
-        newBoard[row][column]=value;
-        if(!isTopConstraintFulfilled(topConstraint, newBoard, value, column, row)
-        || !isBottomConstraintFulfilled(bottomConstraint, newBoard, value, column, row)
-        || !isLeftConstraintFulfilled(leftConstraint, newBoard, value, column, row)
-        || !isRightConstraintFulfilled(rightConstraint, newBoard, value, column, row)) {
+        newBoard[node.row][node.column]=node.value;
+        if(!isTopConstraintFulfilled(topConstraint, newBoard, node.value, node.column, node.row)
+        || !isBottomConstraintFulfilled(bottomConstraint, newBoard, node.value, node.column, node.row)
+        || !isLeftConstraintFulfilled(leftConstraint, newBoard, node.value, node.column, node.row)
+        || !isRightConstraintFulfilled(rightConstraint, newBoard, node.value, node.column, node.row)) {
             return false;
         }
         board = newBoard;

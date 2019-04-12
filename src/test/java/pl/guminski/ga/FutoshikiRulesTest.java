@@ -35,7 +35,7 @@ public class FutoshikiRulesTest {
         CSPGameSimulation cspGameSimulation = new CSPGameSimulation(futoshiki);
         List<int[][]> solutions = cspGameSimulation.runGameAndFindSolutions();
         for(int[][] solution: solutions){
-            System.out.println(Arrays.toString(solution[0]));
+            System.out.println(Arrays.toString(solution[3]));
         }
     }
 

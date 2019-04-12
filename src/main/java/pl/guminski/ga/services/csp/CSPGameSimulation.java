@@ -9,8 +9,6 @@ import java.util.List;
 
 public class CSPGameSimulation {
 
-    CSPDataExtractorService dataExtractorService = new CSPDataExtractorService();
-
     Rules rules;
 
     List<int[][]> solutions = new ArrayList<>();
@@ -35,46 +33,43 @@ public class CSPGameSimulation {
     }
 
     private void solveWithBacktracking(Node node) {
-        if(isValueAlreadyInCell(node)){
-
-        }else if(isLastCell(node) && rules.isConstraintsFulfilled(node.value, node.row, node.column)){
+        if(isLastCell(node.column, node.row) && rules.isConstraintsFulfilled(node)){
             assignAndCopyBoard(node);
-        }else if(isLastCellInRow(node) && rules.isConstraintsFulfilled(node.value, node.row, node.column)){
-            assignValueAndCheckNextRowChildren(node);
-        }else if(rules.isConstraintsFulfilled(node.value, node.row, node.column)){
+        }else if(rules.isConstraintsFulfilled(node)){
             assignAndFindSolution(node);
         }else backtrackCounter++;
     }
 
-    private void assignValueAndCheckNextRowChildren(Node node) {
-        rules.board[node.row][node.column] = node.value;
-        for (int i = 0; i < rules.board.length; i++) {
-            Node childNode = new Node(i + 1, node.row+1, 0);
-            solveWithBacktracking(childNode);
-        }
-        rules.board[node.row][node.column] = 0;
-    }
-
-    private boolean isValueAlreadyInCell(Node node) {
-        return rules.board[node.column][node.row] != 0;
-    }
-
-    private boolean isLastCellInRow(Node node) {
-        return node.column == rules.board.length - 1;
-    }
-
-    private boolean isLastCell(Node node) {
-        return isLastCellInRow(node) && isLastRow(node);
-    }
-
-    private boolean isLastRow(Node node) {
-        return node.row == rules.board.length-1;
-    }
-
     private void assignAndFindSolution(Node node) {
         rules.board[node.row][node.column] = node.value;
-        findSolutionNextChildNodes(node);
+        getNextFreeCellSolution(node.row, node.column);
         rules.board[node.row][node.column] = 0;
+    }
+
+    private void getNextFreeCellSolution(int currentRow, int currentColumn){
+        if(isValueAlreadyInCell(currentColumn, currentRow) && isLastCell(currentColumn, currentRow)){
+            copyBoardAndAddToSolution();
+        }else if(isValueAlreadyInCell(currentColumn, currentRow) && isLastCellInRow(currentColumn)){
+            getNextFreeCellSolution(currentRow+1, 0);
+        }else if(!isValueAlreadyInCell(currentColumn, currentRow)) {
+            findRecursivelyCellSolution(currentRow, currentColumn);
+        }else getNextFreeCellSolution(currentRow, currentColumn+1);
+    }
+
+    private boolean isValueAlreadyInCell(int column, int row) {
+        return rules.board[row][column] != 0;
+    }
+
+    private boolean isLastCellInRow(int column) {
+        return column == rules.board.length - 1;
+    }
+
+    private boolean isLastCell(int column, int row) {
+        return isLastCellInRow(column) && isLastRow(row);
+    }
+
+    private boolean isLastRow(int row) {
+        return row == rules.board.length-1;
     }
 
     private void assignAndCopyBoard(Node node) {
@@ -83,10 +78,10 @@ public class CSPGameSimulation {
         rules.board[node.row][node.column] = 0;
     }
 
-    private void findSolutionNextChildNodes(Node node) {
+    private void findRecursivelyCellSolution(int row, int column) {
         for (int i = 0; i < rules.board.length; i++) {
-            Node childNode = new Node(i + 1, node.row, node.column + 1);
-            solveWithBacktracking(childNode);
+            Node node = new Node(i + 1, row, column);
+            solveWithBacktracking(node);
         }
     }
 

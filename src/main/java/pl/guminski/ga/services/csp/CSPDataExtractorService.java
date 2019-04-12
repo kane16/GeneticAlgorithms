@@ -73,7 +73,8 @@ public class CSPDataExtractorService {
     private String replaceLettersWithIndexes(String constraint) {
         return constraint.replace("A", "1").replace("B", "2")
                 .replace("C", "3").replace("D", "4").replace("E", "5")
-                .replace("F", "6");
+                .replace("F", "6").replace("G", "7").replace("H", "8")
+                .replace("I", "9");
     }
 
     public File getDataInputFile(String filename){

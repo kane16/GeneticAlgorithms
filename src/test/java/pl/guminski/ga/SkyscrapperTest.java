@@ -29,11 +29,6 @@ public class SkyscrapperTest {
         SkyscraperItem skyscraperItem = dataExtractorService.getScascraperItemFromFile("skyscrapper_4_0");
         SkyscrapperRules skyscrapperRules = new SkyscrapperRules(skyscraperItem.bottomBound, skyscraperItem.topBound,
                 skyscraperItem.leftBound, skyscraperItem.rightBound, skyscraperItem.board);
-        assertTrue(skyscrapperRules.isConstraintsFulfilled(4, 1, 1));
-        skyscraperItem.board[1][1] = 4;
-        assertFalse(skyscrapperRules.isConstraintsFulfilled(4, 1, 2));
-        skyscraperItem.board[1][0] = 5;
-        assertFalse(skyscrapperRules.isConstraintsFulfilled(3, 1, 2));
     }
 
 }
